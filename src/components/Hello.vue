@@ -3,12 +3,16 @@
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
     <span>species : {{ species }}</span>
+    </br>
+    <button style="background-color:red" @click="fetchToken" >Get Token</button>
+    <button style="background-color:green" @click="fetchRecords" >Get Records</button>
+    <button style="background-color:orange" @click="getPosition" >Get Position</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app',
+  name: 'hello',
   data() {
     return {
       msg: 'Welcome to Your Vue.js App',
@@ -17,6 +21,19 @@ export default {
   computed: {
     species() {
       return this.$store.getters.species;
+    },
+  },
+  methods: {
+    fetchToken() {
+      this.$store.dispatch('fetchToken');
+    },
+
+    fetchRecords() {
+      this.$store.dispatch('fetchRecordsByLocation');
+    },
+
+    getPosition() {
+      this.$store.dispatch('getPosition');
     },
   },
 };

@@ -8,6 +8,8 @@ Vue.use(Vuex);
 
 const state = {
   records: ['possum', 'bat', 'frog'],
+  token: null,
+  position: null,
 };
 
 export default new Vuex.Store({
