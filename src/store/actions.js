@@ -14,13 +14,17 @@ export const fetchToken = ({ commit }) => {
 export const fetchRecordsByLocation = ({ commit, state }) => {
   const token = state.token;
   const location = {
-    lat: '-37.809610',
+    lat: '-37.809611',
     long: '144.972052',
     rad: 250,
   };
 
   recordsByLocation(location, token)
     .then(records => commit('SET_RECORDS', records));
+    // .then((records) => {
+    //   console.log(records);
+    //   commit('SET_RECORDS', records);
+    // });
 };
 
 export const getPosition = ({ commit }) => {
