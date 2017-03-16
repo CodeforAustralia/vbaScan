@@ -5,10 +5,10 @@ export const guestLogin = () => axios
   .then(res => res.data.jwt)
   .catch(error => console.log(error.message));
 
-export const recordsByLocation = (location, token) => axios
+export const recordsByPosition = (position, token) => axios
   .get('https://vbapi.herokuapp.com/search/point', {
     headers: { 'x-access-token': token },
-    params: location,
+    params: position,
   })
   .then(res => res.data.records)
   .catch(error => console.log(error.message));

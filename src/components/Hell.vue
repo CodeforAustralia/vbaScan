@@ -15,6 +15,11 @@
 <script>
 export default {
   name: 'hello',
+  data() {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+    };
+  },
   computed: {
     records() {
       return this.$store.getters.records.length;
@@ -45,7 +50,7 @@ export default {
       this.$store.dispatch('getPosition');
     },
   },
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

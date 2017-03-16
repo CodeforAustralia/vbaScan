@@ -11,10 +11,12 @@
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit/specs",
     "deploy": "git subtree push --prefix dist heroku master",
-    "postinstall": "npm install express"
+    "postinstall": "npm install express",
+    "storeTest": "mocha --compilers js:babel-core/register src/store/test/*.spec.js"
   },
   "dependencies": {
     "axios": "^0.15.3",
+    "babel-runtime": "^6.23.0",
     "vue": "^2.2.2",
     "vue-material": "^0.7.1",
     "vuex": "^2.2.1"
@@ -26,6 +28,7 @@
     "babel-loader": "^6.2.10",
     "babel-plugin-istanbul": "^3.1.2",
     "babel-plugin-transform-runtime": "^6.22.0",
+    "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.2.1",
     "babel-preset-stage-2": "^6.22.0",
     "babel-register": "^6.22.0",
@@ -40,7 +43,7 @@
     "eslint-friendly-formatter": "^2.0.7",
     "eslint-import-resolver-webpack": "^0.8.1",
     "eslint-loader": "^1.6.1",
-    "eslint-plugin-html": "^2.0.0",
+    "eslint-plugin-html": "^2.0.1",
     "eslint-plugin-import": "^2.2.0",
     "eventsource-polyfill": "^0.9.6",
     "express": "^4.14.1",

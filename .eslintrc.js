@@ -38,5 +38,6 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 0 : 0,
     // allow named export
     // 'import/prefer-default-export': 0,
+    'arrow-body-style': 1,
   }
 }
