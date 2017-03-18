@@ -1,3 +1,5 @@
+/* eslint-disable arrow-body-style */
+
 import { guestLogin, recordsByPosition } from '../api/vba';
 
 export const fetchToken = ({ commit }) => {

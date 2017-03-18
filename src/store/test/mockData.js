@@ -303,14 +303,14 @@ const speciesList = [
     commonNme: 'Spreading Amaranth',
     scientificDisplayNme: 'Amaranthus deflexus',
     taxonId: 500191,
-    totalCountInt: 1,
+    totalCountInt: null,
   },
-  {
-    commonNme: 'Yellow-tailed Black-Cockatoo',
-    scientificDisplayNme: 'Calyptorhynchus funereus',
-    taxonId: 10267,
-    totalCountInt: 0,
-  },
+  // {
+  //   commonNme: 'Yellow-tailed Black-Cockatoo',
+  //   scientificDisplayNme: 'Calyptorhynchus funereus',
+  //   taxonId: 10267,
+  //   totalCountInt: 0,
+  // },
   {
     commonNme: 'Rainbow Lorikeet',
     scientificDisplayNme: 'Trichoglossus haematodus',
@@ -327,8 +327,9 @@ const speciesList = [
     commonNme: 'Grey-headed Flying-fox',
     scientificDisplayNme: 'Pteropus poliocephalus',
     taxonId: 11280,
-    totalCountInt: 23,
+    totalCountInt: 20,
   },
 ];
+
 
 export { records, speciesList };

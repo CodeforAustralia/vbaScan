@@ -45,7 +45,7 @@ export default {
       this.$store.dispatch('getPosition');
     },
   },
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

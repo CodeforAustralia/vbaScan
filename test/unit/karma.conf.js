@@ -31,5 +31,6 @@ module.exports = function (config) {
         { type: 'text-summary' },
       ]
     },
+    autoWatchBatchDelay: 2000,
   });
 };

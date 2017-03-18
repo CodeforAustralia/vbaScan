@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+/* eslint-disable arrow-body-style */
 
 export const records = (state) => {
   return state.records;
@@ -16,21 +17,25 @@ export const species = (state) => {
       taxonId: specie.taxonId,
       totalCountInt: Object.prototype.hasOwnProperty.call(specie, 'totalCountInt')
         ? specie.totalCountInt
-        : 1,
+        : null,
     });
 
-    // specie already present in species ? increment count : add to species
+    // filter out records with totalCount set to 0
+    if (specieClone.totalCountInt === 0) return accuSpecies;
+
+    // specie already present in accuSpecies ? increment count : add to species
     const specieIndex = accuSpecies
-      .findIndex(accuspecie => accuspecie.taxonId === specieClone.taxonId);
+      .findIndex(s => s.taxonId === specieClone.taxonId);
 
     if (specieIndex > -1) {
+      // add up the total count of both records
       specieClone.totalCountInt += accuSpecies[specieIndex].totalCountInt;
-      return [...accuSpecies.slice(0, specieIndex),
+      return [
+        ...accuSpecies.slice(0, specieIndex),
         specieClone,
-        ...accuSpecies.slice(specieIndex + 1)];
+        ...accuSpecies.slice(specieIndex + 1),
+      ];
     }
     return [...accuSpecies, specieClone];
   }, []);
-
-  // return species;
 };
