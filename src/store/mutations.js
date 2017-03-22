@@ -19,3 +19,7 @@ export const SWITCH_VIEW = state => Vue.set(state, 'listView', !state.listView);
 export const UPDATE_FILTER = (state, filter) => {
   Vue.set(state, 'filter', filter);
 };
+
+export const SWITCH_PROGRESS = (state) => {
+  Vue.set(state, 'progress', !state.progress);
+};

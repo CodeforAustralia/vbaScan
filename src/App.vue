@@ -14,6 +14,7 @@
         </md-layout>
       </md-toolbar>
     </md-whiteframe>
+    <md-progress v-if="this.$store.state.progress"class="md-accent" md-indeterminate></md-progress>
     <hello></hello>
   </div>
 </template>

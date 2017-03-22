@@ -12,6 +12,7 @@ const state = {
   position: null,
   listView: true,
   filter: 'records',
+  progress: false,
 };
 
 export default new Vuex.Store({
