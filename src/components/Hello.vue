@@ -1,20 +1,39 @@
 <template>
   <div class="hello">
-    <h1>Welcome to Your Vue.js App</h1>
-    <button style="background-color:red" @click="fetchToken" >Get Token</button>
-    <button style="background-color:green" @click="fetchRecords" >Get Records</button>
-    <button style="background-color:orange" @click="getPosition" >Get Position</button>
-    </br>
-    <span>position : {{ position }}</span></br>
-    <span>token : {{ token }}</span></br>
-    <span>records : {{ records }}</span></br>
-    <span>species : {{ species }}</span></br>
+    <div v-if="!this.$store.state.records.length" class="intro">
+      <h1>Welcome to Bio scan</h1>
+      <p>Explore the recorded species nearby.
+      You can set the size of the search area and download the results.
+      Records are provided by the <a href="https://vba.dse.vic.gov.au/vba/">Victorian Biodiversity Atlas</a></p>
+      <md-layout md-align="center">
+        <md-button @click.native="browse" id="browse-button" class="md-raised">
+          <md-icon>place</md-icon>  
+          Browse
+        </md-button>
+      </md-layout>
+    </div>
+    <recordTable v-else></recordTable>
+
+    <!-- <button style="background-color:red" @click="fetchToken" >Get Token</button> -->
+    <!-- <button style="background-color:green" @click="fetchRecords" >Get Records</button> -->
+    <!-- <button style="background-color:orange" @click="getPosition" >Get Position</button> -->
+    <!-- </br> -->
+    <!-- <span>filter : {{ this.$store.state.filter }}</span></br> -->
+    <!-- <span>position : {{ position }}</span></br> -->
+    <!-- <span>token : {{ token }}</span></br> -->
+    <!-- <span>records : {{ records }}</span></br> -->
+    <!-- <span>species : {{ species }}</span></br> -->
   </div>
 </template>
 
 <script>
+import recordTable from './recordTable';
+
 export default {
   name: 'hello',
+  components: {
+    recordTable,
+  },
   computed: {
     records() {
       return this.$store.getters.records.length;
@@ -44,6 +63,17 @@ export default {
     getPosition() {
       this.$store.dispatch('getPosition');
     },
+
+    browse() {
+      this.$store.dispatch('getPosition')
+        .then((stuff) => {
+          console.log(stuff);
+          return this.fetchRecords();
+        });
+    },
+  },
+  mounted() {
+    this.fetchToken();
   },
 };
 </script>
@@ -67,4 +97,15 @@ li {
 a {
   color: #42b983;
 }
+
+.intro {
+  margin: 1rem;
+  font-size: 1rem;
+}
+
+#browse-button{
+  text-align: center;
+  background-color: #00B2A9;
+}
+
 </style>

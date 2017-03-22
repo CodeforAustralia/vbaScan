@@ -13,3 +13,9 @@ export const SET_RECORDS = (state, records) => {
 export const SET_POSITION = (state, position) => {
   Vue.set(state, 'position', position);
 };
+
+export const SWITCH_VIEW = state => Vue.set(state, 'listView', !state.listView);
+
+export const UPDATE_FILTER = (state, filter) => {
+  Vue.set(state, 'filter', filter);
+};

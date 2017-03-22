@@ -10,6 +10,8 @@ const state = {
   records: [],
   token: null,
   position: null,
+  listView: true,
+  filter: 'records',
 };
 
 export default new Vuex.Store({
