@@ -4,7 +4,7 @@
     <md-list class="list" v-if="this.$store.state.listView && this.$store.getters.records.length">
         <listItem v-for="item in items" :record="item" :key="item.taxonId"></listItem>
     </md-list>
-    <md-layout v-else>
+    <md-layout v-else class="card-layout">
       <gridListItem v-for="item in items" :item="item" :key="item.taxonId"></gridListItem>
     </md-layout>
   </div>
@@ -49,5 +49,8 @@ export default {
 .list{
   padding-top: 0;
   padding-bottom: 0;
+}
+.card-layout {
+  margin-right: 4px;
 }
 </style>

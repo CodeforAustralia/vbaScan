@@ -23,3 +23,7 @@ export const UPDATE_FILTER = (state, filter) => {
 export const SWITCH_PROGRESS = (state) => {
   Vue.set(state, 'progress', !state.progress);
 };
+
+export const ADD_MUSEUM_SPECIES = (state, specie) => {
+  Vue.set(state, 'museumSpecies', [...state.museumSpecies, specie]);
+};

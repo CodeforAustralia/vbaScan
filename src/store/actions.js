@@ -1,6 +1,7 @@
 /* eslint-disable arrow-body-style */
 
-import { guestLogin, recordsByPosition } from '../api/vba';
+import { guestLogin, recordsByPosition, vbaSpecieSearch } from '../api/vba';
+// import { searchMuseumSpecies } from '../api/museum';
 
 export const fetchToken = ({ commit }) => {
   guestLogin()
@@ -20,6 +21,13 @@ export const fetchRecordsByLocation = ({ commit, state }) => {
 
   return recordsByPosition(position, token)
     .then(records => commit('SET_RECORDS', records));
+};
+
+export const hydrateSpecies = ({ commit, getters }) => {
+  getters.species.forEach((specie) => {
+    vbaSpecieSearch(specie.taxonId)
+      .then(specieData => commit('ADD_MUSEUM_SPECIES', specieData));
+  });
 };
 
 export const getPosition = ({ commit }) => {

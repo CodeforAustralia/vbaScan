@@ -1,23 +1,34 @@
 <template>
 <md-layout class="listFilter">
-  <md-layout>
+  <md-layout id="itemType">
     <p>{{itemType}}</p>
   </md-layout>
   <md-layout md-align="end">
-  <md-menu md-align-trigger>
+<!--   <md-menu md-align-trigger>
     <md-button md-menu-trigger>{{menuButton}}</md-button>
     <md-menu-content>
     <div class="dropdown">
       <p>Sort by…</p>
       <div class="menu-item">
-      <md-menu-item @click.native="setFilter('records')" >Records</md-menu-item>
-      <md-menu-item @click.native="setFilter('species')" >Species</md-menu-item>
-      <md-menu-item @click.native="setFilter('distance')" >Distance</md-menu-item>
-      <md-menu-item @click.native="setFilter('count')" >Count</md-menu-item>
+      <md-menu-item @click.native="setFilter('records')">Records</md-menu-item>
+      <md-menu-item @click.native="setFilter('species')">Species</md-menu-item>
+      <md-menu-item @click.native="setFilter('distance')">Distance</md-menu-item>
+      <md-menu-item @click.native="setFilter('count')">Count</md-menu-item>
       </div>
     </div>
     </md-menu-content>
-  </md-menu>
+  </md-menu> -->
+  <div class="field-group">
+    <md-input-container>
+      <label for="filter">Sort by…</label>
+      <md-select name="filter" id="filter" v-model="filter">
+        <md-option value="records">Records</md-option>
+        <md-option value="species">Species</md-option>
+        <md-option value="distance">Distance</md-option>
+        <md-option value="count">Count</md-option>
+      </md-select>
+    </md-input-container>
+  </div>
   </md-layout>
 </md-layout>
 </template>
@@ -28,7 +39,8 @@ import listItem from './listItem';
 export default {
   data() {
     const data = { // eslint-disable-line no-unused-vars
-      selectedFilter: '',
+      // selectedFilter: '',
+      filter: '',
     };
     return data;
   },
@@ -37,12 +49,7 @@ export default {
   },
   computed: {
     itemType() {
-      const filter = this.$store.state.filter;
-      if (filter === 'species' || filter === 'count') return 'Species';
-      return 'Records';
-    },
-    menuButton() {
-      switch (this.$store.state.filter) {
+      switch (this.filter) {
         case 'species':
           return '↑ Species';
         case 'distance':
@@ -54,9 +61,16 @@ export default {
       }
     },
   },
-  methods: {
-    setFilter(filter) {
-      console.log(filter);
+  // methods: {
+  //   setFilter(filter) {
+  //     // console.log(filter);
+  //     this.$store.dispatch('updateFilter', filter);
+  //   },
+  // },
+
+  watch: {
+    filter: function updateFIlter(filter) {
+      console.log(`filter changed to ${filter}`);
       this.$store.dispatch('updateFilter', filter);
     },
   },
@@ -68,10 +82,6 @@ export default {
   margin: 16px 0 0 20px;
 }
 
-.dropdown {
-  /*background-color: white;*/
-}
-
 .dropdown p {
   padding-left: 0.5rem; 
 }
@@ -79,8 +89,25 @@ export default {
 .menu-item {
   padding-left: 0.5rem;
 }
-.md-theme-default.md-list{
-  background-color: white !important;
+
+:root .md-theme-default.md-menu-content .md-list{
+  background-color: white;
+}
+
+.md-input-container {
+  margin: 4px 0 4px;
+}
+.md-input-container:after {
+  display: none;
+}
+
+#itemType{
+  justify-content: flex-end;
+  flex-direction: column;
+  margin-bottom: 0.8rem;
+}
+#itemType p {
+  margin: 0;
 }
 
 

@@ -6,7 +6,7 @@
       You can set the size of the search area and download the results.
       Records are provided by the <a href="https://vba.dse.vic.gov.au/vba/">Victorian Biodiversity Atlas</a></p>
       <md-layout md-align="center">
-        <md-button v-if="this.$store.state.token" @click.native="browse" id="browse-button" class="md-raised">
+        <md-button  :disabled="false" v-if="this.$store.state.token" @click.native="browse" id="browse-button" class="md-raised">
           <md-icon>place</md-icon>  
           Browse
         </md-button>
@@ -69,6 +69,7 @@ export default {
       this.$store.dispatch('switchProgress');
       this.$store.dispatch('getPosition')
         .then(() => this.$store.dispatch('fetchRecordsByLocation'))
+        .then(() => this.$store.dispatch('hydrateSpecies'))
         .then(() => this.$store.dispatch('switchProgress'));
     },
   },
@@ -94,8 +95,12 @@ li {
   margin: 0 10px;
 }
 
-a {
-  color: #42b983;
+:root .hello a {
+  color: #3e3287;
+}
+
+.hello p {
+  white-space: pre-line;
 }
 
 .intro {

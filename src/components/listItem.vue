@@ -1,7 +1,7 @@
 <template>
   <md-list-item class="md-list-item">
     <md-avatar>
-      <img :src="record.thumbnailUrl" v-if="record.thumbnailUrl">
+      <img :src="thumbnail" v-if="false">
       <img src="https://emojione.com/wp-content/uploads/assets/emojis/1f43e.svg" alt="emoji" class="emoji" v-else>
     </md-avatar>
 
@@ -27,6 +27,16 @@ export default {
       const taxonId = parseInt(event.currentTarget.id, 10);
       // this.$refs.rightSidenav.toggle();
       this.$emit('infoPanel', taxonId);
+    },
+  },
+  computed: {
+    thumbnail() {
+      function isSameTaxonId(specie) {
+        return parseInt(specie[0].TAXON_ID, 10) === this.record.taxonId;
+      }
+      // debugger;
+      return this.$store.state.museumSpecies
+        .find(isSameTaxonId, this)[2].media[0].small.uri;
     },
   },
 };

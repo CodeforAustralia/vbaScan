@@ -12,3 +12,8 @@ export const recordsByPosition = (position, token) => axios
   })
   .then(res => res.data.records)
   .catch(error => console.log(error.message));
+
+export const vbaSpecieSearch = taxonId => axios
+  .get(`https://vbaspecies.herokuapp.com/species/${taxonId}`)
+  .then(res => res.data)
+  .catch(error => console.log(error.message));

@@ -31,12 +31,13 @@ export default {
   font-size: 1em;
 }
 .card {
-  width: 48vw;
+  max-width: 48%;
   margin: 0 0 4px 4px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   background-color: white;
+  flex-grow: 1;
 }
 
 .media {

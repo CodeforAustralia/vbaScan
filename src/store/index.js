@@ -8,6 +8,7 @@ Vue.use(Vuex);
 
 const state = {
   records: [],
+  museumSpecies: [],
   token: null,
   position: null,
   listView: true,

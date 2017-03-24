@@ -55,7 +55,6 @@ export default {
   justify-content: space-between;
 }
 .md-theme-default.md-toolbar {
-  /*background-color:  #201547 !important;*/
 background: linear-gradient(120deg, #201547 0%,#201547 74%,#00b2a9 70%,#00b2a9 80%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
 
