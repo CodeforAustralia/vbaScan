@@ -5,6 +5,13 @@ export const records = (state) => {
   return state.records;
 };
 
+export const museumSpecie = state => (taxonId) => {
+  // console.log(state.museumSpecies);
+  if (!state.museumSpecies.length) return false;
+  const mSpecie = state.museumSpecies.find(ms => ms.vbaTaxonId === taxonId);
+  return mSpecie;
+};
+
 export const token = (state) => {
   return state.token;
 };

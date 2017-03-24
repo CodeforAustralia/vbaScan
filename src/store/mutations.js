@@ -25,5 +25,5 @@ export const SWITCH_PROGRESS = (state) => {
 };
 
 export const ADD_MUSEUM_SPECIES = (state, specie) => {
-  Vue.set(state, 'museumSpecies', [...state.museumSpecies, specie]);
+  state.museumSpecies.push(specie);
 };

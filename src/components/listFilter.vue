@@ -4,20 +4,6 @@
     <p>{{itemType}}</p>
   </md-layout>
   <md-layout md-align="end">
-<!--   <md-menu md-align-trigger>
-    <md-button md-menu-trigger>{{menuButton}}</md-button>
-    <md-menu-content>
-    <div class="dropdown">
-      <p>Sort by…</p>
-      <div class="menu-item">
-      <md-menu-item @click.native="setFilter('records')">Records</md-menu-item>
-      <md-menu-item @click.native="setFilter('species')">Species</md-menu-item>
-      <md-menu-item @click.native="setFilter('distance')">Distance</md-menu-item>
-      <md-menu-item @click.native="setFilter('count')">Count</md-menu-item>
-      </div>
-    </div>
-    </md-menu-content>
-  </md-menu> -->
   <div class="field-group">
     <md-input-container>
       <label for="filter">Sort by…</label>
@@ -61,15 +47,8 @@ export default {
       }
     },
   },
-  // methods: {
-  //   setFilter(filter) {
-  //     // console.log(filter);
-  //     this.$store.dispatch('updateFilter', filter);
-  //   },
-  // },
-
   watch: {
-    filter: function updateFIlter(filter) {
+    filter: function updateFilter(filter) {
       console.log(`filter changed to ${filter}`);
       this.$store.dispatch('updateFilter', filter);
     },

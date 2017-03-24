@@ -1,7 +1,18 @@
 /* eslint-disable arrow-body-style */
 
-import { guestLogin, recordsByPosition, vbaSpecieSearch } from '../api/vba';
-// import { searchMuseumSpecies } from '../api/museum';
+import { guestLogin, recordsByPosition /* , vbaSpecieSearch */} from '../api/vba';
+import { searchMuseumSpecies } from '../api/museum';
+
+function filterDuplicateSpecies(records) {
+  const species = records.reduce((acc, record) => {
+    // filter out records with totalCount set to 0
+    if (record.totalCountInt === 0) return acc;
+    const index = acc.findIndex(r => r.taxonId === record.taxonId);
+    if (index === -1) acc.push(record);
+    return acc;
+  }, []);
+  return species;
+}
 
 export const fetchToken = ({ commit }) => {
   guestLogin()
@@ -20,14 +31,28 @@ export const fetchRecordsByLocation = ({ commit, state }) => {
   };
 
   return recordsByPosition(position, token)
-    .then(records => commit('SET_RECORDS', records));
+    .then((records) => {
+      commit('SET_RECORDS', records);
+      const species = filterDuplicateSpecies(records);
+      // console.log(species);
+      species.forEach((specie) => {
+        searchMuseumSpecies(specie.scientificDisplayNme)
+          .then((specieData) => {
+            const hydratedSpecie = Object.assign({}, specieData, { vbaTaxonId: specie.taxonId });
+            console.log(hydratedSpecie);
+            commit('ADD_MUSEUM_SPECIES', hydratedSpecie);
+          });
+      });
+    });
 };
 
-export const hydrateSpecies = ({ commit, getters }) => {
-  getters.species.forEach((specie) => {
-    vbaSpecieSearch(specie.taxonId)
-      .then(specieData => commit('ADD_MUSEUM_SPECIES', specieData));
-  });
+export const hydrateSpecies = ({ commit }, specieName) => {
+  searchMuseumSpecies(specieName)
+    .then(specieData => commit('ADD_MUSEUM_SPECIES', specieData));
+  // getters.species.forEach((specie) => {
+  //   vbaSpecieSearch(specie.taxonId)
+  //     .then(specieData => commit('ADD_MUSEUM_SPECIES', specieData));
+  // });
 };
 
 export const getPosition = ({ commit }) => {
@@ -73,6 +98,3 @@ export const switchProgress = ({ commit }) => {
   commit('SWITCH_PROGRESS');
 };
 
-// export const fetchRecords = (store) => {
-//   store.dispatch('getPosition')
-// };

@@ -1,14 +1,15 @@
 <template>
   <md-list-item class="md-list-item">
     <md-avatar>
-      <img :src="thumbnail" v-if="false">
+      <img :src="thumbnail" v-if="thumbnail">
       <img src="https://emojione.com/wp-content/uploads/assets/emojis/1f43e.svg" alt="emoji" class="emoji" v-else>
     </md-avatar>
 
     <div class="md-list-text-container">
       <span>{{record.commonNme}}</span>
       <span>{{record.scientificDisplayNme}}</span>
-      <p>Total count : {{record.totalCountInt}}</p>
+      <p v-if="record.totalCountInt">Total count : {{record.totalCountInt}}</p>
+      <!-- <p v-else></p> -->
     </div>
 
     <md-button @click.native="toggleRightSidenav" :id="record.taxonId" class="md-icon-button md-list-action">
@@ -31,12 +32,16 @@ export default {
   },
   computed: {
     thumbnail() {
-      function isSameTaxonId(specie) {
-        return parseInt(specie[0].TAXON_ID, 10) === this.record.taxonId;
+      const museumSpecie = this.$store.getters.museumSpecie(this.record.taxonId);
+      console.log(museumSpecie);
+      if (!museumSpecie) return false;
+      try {
+        const uri = museumSpecie.media[0].small.uri;
+        return uri;
+      } catch (e) {
+        console.log(e);
+        return false;
       }
-      // debugger;
-      return this.$store.state.museumSpecies
-        .find(isSameTaxonId, this)[2].media[0].small.uri;
     },
   },
 };
