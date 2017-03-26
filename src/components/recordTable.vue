@@ -5,7 +5,7 @@
         <listItem v-for="item in items" :record="item" :key="item.taxonId"></listItem>
     </md-list>
     <md-layout v-else class="card-layout">
-      <gridListItem v-for="item in items" :item="item" :key="item.taxonId"></gridListItem>
+      <gridListItem v-for="item in items" :record="item" :key="item.taxonId"></gridListItem>
     </md-layout>
   </div>
 </template>
@@ -17,11 +17,6 @@ import listFilter from './listFilter';
 
 
 export default {
-  // data() {
-  //   const data = { // eslint-disable-line no-unused-vars
-  //     listView: true,
-  //   };
-  // },
   components: {
     listItem,
     gridListItem,
@@ -39,7 +34,6 @@ export default {
         default:
           return this.$store.getters.records;
       }
-      // return this.$store.getters.records;
     },
   },
 };

@@ -12,6 +12,13 @@ export const museumSpecie = state => (taxonId) => {
   return mSpecie;
 };
 
+export const museumSpecieMedia = state => (taxonId) => {
+  const mSpecie = state.museumSpecies.find(ms => ms.vbaTaxonId === taxonId);
+  if (!mSpecie) return false;
+  if (Object.prototype.hasOwnProperty.call(mSpecie, 'media')) return mSpecie.media;
+  return false;
+};
+
 export const token = (state) => {
   return state.token;
 };

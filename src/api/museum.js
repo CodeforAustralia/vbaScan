@@ -10,5 +10,9 @@ export const searchMuseumSpecies = (specieName) => axios
       recordtype: 'species',
     },
   })
-  .then(res => res.data[0])
+  .then((res) => {
+    // only return VicMuseum species matching the initial query
+    const specie = res.data.find(s => s.taxonomy.taxonName === res.config.params.query);
+    return specie;
+  })
   .catch(error => console.log(error.message));

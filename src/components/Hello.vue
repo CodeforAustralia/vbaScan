@@ -73,7 +73,7 @@ export default {
         .then(() => this.$store.dispatch('switchProgress'));
     },
   },
-  mounted() {
+  beforeMount() {
     this.fetchToken();
   },
 };

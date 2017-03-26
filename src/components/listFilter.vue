@@ -4,7 +4,7 @@
     <p>{{itemType}}</p>
   </md-layout>
   <md-layout md-align="end">
-  <div class="field-group">
+  <div class="filterSelector">
     <md-input-container>
       <label for="filter">Sort by…</label>
       <md-select name="filter" id="filter" v-model="filter">
@@ -58,7 +58,11 @@ export default {
 
 <style >
 .listFilter{
-  margin: 16px 0 0 20px;
+  margin: 16px 0 0 1rem;
+}
+
+.filterSelector{
+  margin-right: 1rem;
 }
 
 .dropdown p {

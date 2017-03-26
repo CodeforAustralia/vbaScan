@@ -34,10 +34,11 @@ export const fetchRecordsByLocation = ({ commit, state }) => {
     .then((records) => {
       commit('SET_RECORDS', records);
       const species = filterDuplicateSpecies(records);
-      // console.log(species);
       species.forEach((specie) => {
+        // Make AJAX call to museum vic with specie scientific name
         searchMuseumSpecies(specie.scientificDisplayNme)
           .then((specieData) => {
+            if (!specieData) return;
             const hydratedSpecie = Object.assign({}, specieData, { vbaTaxonId: specie.taxonId });
             console.log(hydratedSpecie);
             commit('ADD_MUSEUM_SPECIES', hydratedSpecie);

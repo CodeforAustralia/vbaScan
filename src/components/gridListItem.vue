@@ -1,26 +1,35 @@
 <template>
   <md-whiteframe md-elevation="1" class="card">
     <div class="media">
-      <img :src="item.thumbnailUrl" v-if="item.thumbnailUrl">
+      <img :src="thumbnail" v-if="thumbnail">
       <img src="https://emojione.com/wp-content/uploads/assets/emojis/1f43e.svg" alt="emoji" class="emoji" v-else>
     </div>
     <div class="content">
       <img src="https://emojione.com/wp-content/uploads/assets/emojis/1f43e.svg" alt="emoji" class="emoji">
-      <p class="truncate">{{item.commonNme}}</p>
-      <md-icon class="md-primary" @click.native="toggleRightSidenavCard" :id="item.taxonId">info</md-icon>
+      <p class="truncate">{{record.commonNme}}</p>
+      <md-icon class="md-primary" @click.native="toggleRightSidenavCard" :id="record.taxonId">info</md-icon>
     </div>
   </md-whiteframe>
 </template>
 
 <script>
 export default {
-  props: ['item'],
+  props: ['record'],
   methods: {
     // toggleRightSidenav() {
     //   const taxonId = parseInt(event.currentTarget.id, 10);
     //   // this.$refs.rightSidenav.toggle();
     //   this.$emit('infoPanel', taxonId);
     // },
+    // media[0].small.uri
+  },
+  computed: {
+    thumbnail() {
+      const media = this.$store.getters.museumSpecieMedia(this.record.taxonId);
+      if (!media) return false;
+      if (Object.prototype.hasOwnProperty.call(media[0], 'small')) return media[0].small.uri;
+      return false;
+    },
   },
 };
 </script>
@@ -43,7 +52,7 @@ export default {
 .media {
   height: 20vh;
   display: flex;
-  align-items: center;
+  align-records: center;
   justify-content: center;
 }
 .media img {

@@ -26,22 +26,15 @@ export default {
   methods: {
     toggleRightSidenav() {
       const taxonId = parseInt(event.currentTarget.id, 10);
-      // this.$refs.rightSidenav.toggle();
       this.$emit('infoPanel', taxonId);
     },
   },
   computed: {
     thumbnail() {
-      const museumSpecie = this.$store.getters.museumSpecie(this.record.taxonId);
-      console.log(museumSpecie);
-      if (!museumSpecie) return false;
-      try {
-        const uri = museumSpecie.media[0].small.uri;
-        return uri;
-      } catch (e) {
-        console.log(e);
-        return false;
-      }
+      const media = this.$store.getters.museumSpecieMedia(this.record.taxonId);
+      if (!media) return false;
+      if (Object.prototype.hasOwnProperty.call(media[0], 'small')) return media[0].small.uri;
+      return false;
     },
   },
 };
@@ -50,7 +43,6 @@ export default {
 <style>
 .md-list-item{
   background-color: white;
-  /*padding-bottom: 5px;*/
   padding-top: 5px;
 }
 </style>
