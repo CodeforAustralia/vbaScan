@@ -12,9 +12,9 @@
       <!-- <p v-else></p> -->
     </div>
 
-    <md-button @click.native="toggleRightSidenav" :id="record.taxonId" class="md-icon-button md-list-action">
+    <!-- <md-button @click.native="toggleRightSidenav" :id="record.taxonId" class="md-icon-button md-list-action">
       <md-icon class="md-primary">info</md-icon>
-    </md-button>
+    </md-button> -->
 
     <md-divider class="md-inset"></md-divider>
   </md-list-item>
