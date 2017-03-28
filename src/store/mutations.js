@@ -27,3 +27,11 @@ export const SWITCH_PROGRESS = (state) => {
 export const ADD_MUSEUM_SPECIES = (state, specie) => {
   state.museumSpecies.push(specie);
 };
+
+export const ADD_ALA_SPECIES = (state, specie) => {
+  state.ALASpecies.push(specie);
+};
+
+export const UPDATE_SPECIE_DETAIL = (state, specie) => {
+  Vue.set(state, 'selectedSpecie', specie);
+};

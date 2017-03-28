@@ -2,6 +2,7 @@
 
 import { guestLogin, recordsByPosition /* , vbaSpecieSearch */} from '../api/vba';
 import { searchMuseumSpecies } from '../api/museum';
+import { searchALASpecies } from '../api/atlasLivingAus';
 
 function filterDuplicateSpecies(records) {
   const species = records.reduce((acc, record) => {
@@ -38,10 +39,18 @@ export const fetchRecordsByLocation = ({ commit, state }) => {
         // Make AJAX call to museum vic with specie scientific name
         searchMuseumSpecies(specie.scientificDisplayNme)
           .then((specieData) => {
-            if (!specieData) return;
+            // If the Vic museum doesnt return data, lookup the ALA
+            if (!specieData) {
+              return searchALASpecies(specie.scientificDisplayNme)
+              .then((alaSpecieData) => {
+                const hydratedSpecie = Object
+                  .assign({}, alaSpecieData, { vbaTaxonId: specie.taxonId });
+                commit('ADD_ALA_SPECIES', hydratedSpecie);
+              });
+            }
             const hydratedSpecie = Object.assign({}, specieData, { vbaTaxonId: specie.taxonId });
-            console.log(hydratedSpecie);
-            commit('ADD_MUSEUM_SPECIES', hydratedSpecie);
+            // console.log(hydratedSpecie);
+            return commit('ADD_MUSEUM_SPECIES', hydratedSpecie);
           });
       });
     });
@@ -49,7 +58,9 @@ export const fetchRecordsByLocation = ({ commit, state }) => {
 
 export const hydrateSpecies = ({ commit }, specieName) => {
   searchMuseumSpecies(specieName)
-    .then(specieData => commit('ADD_MUSEUM_SPECIES', specieData));
+    .then((specieData) => {
+      if (specieData) commit('ADD_MUSEUM_SPECIES', specieData);
+    });
   // getters.species.forEach((specie) => {
   //   vbaSpecieSearch(specie.taxonId)
   //     .then(specieData => commit('ADD_MUSEUM_SPECIES', specieData));
@@ -99,3 +110,6 @@ export const switchProgress = ({ commit }) => {
   commit('SWITCH_PROGRESS');
 };
 
+export const setSpecieDetail = ({ commit }, taxonId) => {
+  commit('UPDATE_SPECIE_DETAIL', taxonId);
+};

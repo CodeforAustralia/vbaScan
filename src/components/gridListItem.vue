@@ -13,7 +13,7 @@ export default {
   },
   computed: {
     thumbnail() {
-      const media = this.$store.getters.museumSpecieMedia(this.record.taxonId);
+      const media = this.$store.getters.specieMedia(this.record.taxonId);
       if (!media) return false;
       if (Object.prototype.hasOwnProperty.call(media[0], 'small')) return media[0].small.uri;
       return false;

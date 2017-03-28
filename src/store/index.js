@@ -9,6 +9,8 @@ Vue.use(Vuex);
 const state = {
   records: [],
   museumSpecies: [],
+  ALASpecies: [],
+  selectedSpecie: null,
   token: null,
   position: null,
   listView: true,

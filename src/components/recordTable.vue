@@ -2,7 +2,8 @@
   <div>
     <listFilter></listFilter>
     <md-list class="list" v-if="this.$store.state.listView && this.$store.getters.records.length">
-        <listItem v-for="item in items" :record="item" :key="item.taxonId"></listItem>
+        <listItem v-for="item in items" :record="item" :key="item.taxonId"
+          @click.native="selectSpecie(item.taxonId)"></listItem>
     </md-list>
     <md-layout v-else class="card-layout">
       <gridListItem v-for="item in items" :record="item" :key="item.taxonId"></gridListItem>
@@ -14,7 +15,6 @@
 import listItem from './listItem';
 import gridListItem from './gridListItem';
 import listFilter from './listFilter';
-
 
 export default {
   components: {
@@ -34,6 +34,12 @@ export default {
         default:
           return this.$store.getters.records;
       }
+    },
+  },
+  methods: {
+    selectSpecie(taxonId) {
+      console.log(taxonId);
+      this.$store.dispatch('setSpecieDetail', taxonId);
     },
   },
 };

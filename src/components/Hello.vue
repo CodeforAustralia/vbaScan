@@ -13,6 +13,7 @@
       </md-layout>
     </div>
     <recordTable v-else></recordTable>
+    <specieDetail v-if="selectedSpecie" :specie="selectedSpecie"></specieDetail>
 
     <!-- <button style="background-color:red" @click="fetchToken" >Get Token</button> -->
     <!-- <button style="background-color:green" @click="fetchRecords" >Get Records</button> -->
@@ -28,13 +29,20 @@
 
 <script>
 import recordTable from './recordTable';
+import specieDetail from './specieDetail';
 
 export default {
   name: 'hello',
   components: {
     recordTable,
+    specieDetail,
   },
   computed: {
+    selectedSpecie() {
+      console.log('___', this.$store.getters.selectedSpecieData);
+      return this.$store.getters.selectedSpecieData;
+    },
+
     records() {
       return this.$store.getters.records.length;
     },

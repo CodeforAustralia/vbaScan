@@ -9,13 +9,8 @@
       <span>{{record.commonNme}}</span>
       <span>{{record.scientificDisplayNme}}</span>
       <p v-if="record.totalCountInt">Total count : {{record.totalCountInt}}</p>
-      <!-- <p v-else></p> -->
+      <p v-else>Uncounted</p>
     </div>
-
-    <!-- <md-button @click.native="toggleRightSidenav" :id="record.taxonId" class="md-icon-button md-list-action">
-      <md-icon class="md-primary">info</md-icon>
-    </md-button> -->
-
     <md-divider class="md-inset"></md-divider>
   </md-list-item>
 </template>
@@ -31,7 +26,7 @@ export default {
   },
   computed: {
     thumbnail() {
-      const media = this.$store.getters.museumSpecieMedia(this.record.taxonId);
+      const media = this.$store.getters.specieMedia(this.record.taxonId);
       if (!media) return false;
       if (Object.prototype.hasOwnProperty.call(media[0], 'small')) return media[0].small.uri;
       return false;
@@ -41,8 +36,20 @@ export default {
 </script>
 
 <style>
-.md-list-item{
+.md-list-item {
   background-color: white;
   padding-top: 5px;
+}
+
+.md-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0, 0.1);
+}
+
+.md-avatar img {
+  width: auto;
+  height: auto;
 }
 </style>
