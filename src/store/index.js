@@ -12,7 +12,7 @@ const state = {
   token: null,
   position: null,
   listView: true,
-  filter: 'records',
+  filter: 'species',
   progress: false,
 };
 

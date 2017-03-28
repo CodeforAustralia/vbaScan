@@ -1,13 +1,7 @@
 <template>
   <md-whiteframe md-elevation="1" class="card">
-    <div class="card-content" v-bind:style="backgroundImage">
-      <!-- <img :src="thumbnail" v-if="thumbnail"> -->
-     <!--  <img src="https://emojione.com/wp-content/uploads/assets/emojis/1f43e.svg" alt="emoji" class="emoji" v-else> -->
-    <!-- </div> -->
-    <!-- <div class="content"> -->
-      <!-- <img src="https://emojione.com/wp-content/uploads/assets/emojis/1f43e.svg" alt="emoji" class="emoji"> -->
+    <div class="card-content" :style="backgroundImage">
       <p class="specie-name truncate">{{record.commonNme}}</p>
-      <!-- <md-icon class="md-primary" @click.native="toggleRightSidenavCard" :id="record.taxonId">info</md-icon> -->
     </div>
   </md-whiteframe>
 </template>
@@ -25,63 +19,53 @@ export default {
       return false;
     },
     backgroundImage() {
-      const style = {
-        'background-image': this.thumbnail ? `url(${this.thumbnail})` : 'url(https://emojione.com/wp-content/uploads/assets/emojis/1f43e.svg)',
+      const imageLink = this.thumbnail;
+
+      if (imageLink) {
+        const style = {
+          background: `url(${imageLink}) top center no-repeat` +
+                      ',linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 20%, rgba(255,255,255,0.8) 80%, rgba(255,255,255,0) 100%)' +
+                      `,url(${imageLink}) no-repeat`,
+          backgroundSize: 'contain, contain, cover',
+        };
+        return style;
+      }
+      const defaultStyle = {
+        background: 'url(https://emojione.com/wp-content/uploads/assets/emojis/1f43e.svg)' +
+                    'top center no-repeat',
       };
-      console.log(style);
-      return style;
+      return defaultStyle;
     },
   },
 };
 </script>
 <style scoped>
-.content {
-  height: 44px;
-  display: flex;
-  font-size: 1em;
-}
+
 .card {
-  max-width: 48%;
+  width: 48vw;
+  max-width: 48vw;
   margin: 0 0 4px 4px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  background-color: white;
+  background-color: white; /* fallback */
   flex-grow: 1;
 }
 
 .card-content {
-  background-position-y: top;
-  background-position-x: center;
-  background-repeat: no-repeat;
-  background-size: contain;
   align-items: flex-end;
   height: 20vh;
   display: flex;
-  align-records: center;
   justify-content: center;
-}
-.media img {
-  min-height: 50%;
-  min-width: 50%;
-  max-width: 100%;
-  max-height: 100%;
-}
-
-.emoji{
-  margin: 8px;
-  width: 24px;
-  height: 24px;
 }
 
 .truncate {
-  /*width: 34vw;*/
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.specie-name{
+.specie-name {
   background-color: rgba(127, 133, 137, 0.7);
   font-size: 1rem;
   color: white;
