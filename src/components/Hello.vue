@@ -12,9 +12,12 @@
         </md-button>
       </md-layout>
     </div>
-    <recordTable v-else></recordTable>
-    <specieDetail v-if="selectedSpecie" :specie="selectedSpecie"></specieDetail>
 
+    <!-- <recordTable v-show="this.$store.state.records.length"></recordTable> -->
+    <!-- <specieDetail v-if="selectedSpecie" :specie="selectedSpecie"></specieDetail> -->
+    <transition name="component-fade" mode="out-in" >
+      <component :is="currentComponent"></component>
+    </transition>
     <!-- <button style="background-color:red" @click="fetchToken" >Get Token</button> -->
     <!-- <button style="background-color:green" @click="fetchRecords" >Get Records</button> -->
     <!-- <button style="background-color:orange" @click="getPosition" >Get Position</button> -->
@@ -33,11 +36,25 @@ import specieDetail from './specieDetail';
 
 export default {
   name: 'hello',
+  // data() {
+  //   const data = { // eslint-disable-line no-unused-vars
+  //     currentComponent: null,
+  //   };
+  //   return data;
+  // },
+
   components: {
     recordTable,
     specieDetail,
   },
+
   computed: {
+    currentComponent() {
+      if (this.$store.getters.selectedSpecieData) return 'specieDetail';
+      else if (this.$store.state.records.length) return 'recordTable';
+      return null;
+    },
+
     selectedSpecie() {
       console.log('___', this.$store.getters.selectedSpecieData);
       return this.$store.getters.selectedSpecieData;
@@ -121,4 +138,14 @@ li {
   background-color: #00B2A9;
 }
 
+</style>
+
+<style>
+.component-fade-enter-active, .component-fade-leave-active {
+  transition: opacity .3s ease;
+}
+.component-fade-enter, .component-fade-leave-to
+/* .component-fade-leave-active for <2.1.8 */ {
+  opacity: 0;
+}
 </style>

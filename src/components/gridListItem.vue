@@ -23,7 +23,7 @@ export default {
 
       if (imageLink) {
         const style = {
-          background: `url(${imageLink}) top center no-repeat` +
+          background: `url(${imageLink}) center center no-repeat` +
                       ',linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 20%, rgba(255,255,255,0.8) 80%, rgba(255,255,255,0) 100%)' +
                       `,url(${imageLink}) no-repeat`,
           backgroundSize: 'contain, contain, cover',
@@ -54,7 +54,7 @@ export default {
 
 .card-content {
   align-items: flex-end;
-  height: 20vh;
+  height: 25vh;
   display: flex;
   justify-content: center;
 }
