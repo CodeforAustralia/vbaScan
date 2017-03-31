@@ -5,11 +5,12 @@
     </md-button>
     <h1>{{specie.taxonomy.commonName}}</h1>
     <h2>{{specie.taxonomy.taxonName}}</h2>
-    <div class="images" :style="backgroundImage">
+    <!--  :style="backgroundImage" -->
+    <div class="images">
       <md-button class="nav-button">
         <md-icon>navigate_before</md-icon>
       </md-button>
-      <!-- <img :src="thumbnail"> -->
+      <img :src="thumbnail">
       <md-button class="nav-button">
         <md-icon>navigate_next</md-icon>
       </md-button>
@@ -90,12 +91,14 @@ export default {
   align-items: center;
   justify-content: space-between;
   height: 30vh;
+  /*overflow: auto*/
 }
 
 .images img {
   max-height: 100%;
   max-width: 100%;
   object-fit: contain;
+  overflow: auto;
 }
 
 .nav-button {
