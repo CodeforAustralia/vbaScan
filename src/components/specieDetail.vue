@@ -5,16 +5,9 @@
     </md-button>
     <h1>{{specie.taxonomy.commonName}}</h1>
     <h2>{{specie.taxonomy.taxonName}}</h2>
-    <!--  :style="backgroundImage" -->
-    <div class="images">
-      <md-button class="nav-button">
-        <md-icon>navigate_before</md-icon>
-      </md-button>
-      <img :src="thumbnail">
-      <md-button class="nav-button">
-        <md-icon>navigate_next</md-icon>
-      </md-button>
-    </div>
+
+    <imgSlider></imgSlider>
+
     <div class="description">
       <h3>Description :</h3>
       <p>{{description}}</p>
@@ -32,9 +25,13 @@
 </template>
 
 <script>
+import imgSlider from './imgSlider';
 
 export default {
   // props: ['specie'],
+  components: {
+    imgSlider,
+  },
   data() {
     const data = { // eslint-disable-line no-unused-vars
       specie: this.$store.getters.selectedSpecieData,
@@ -53,23 +50,6 @@ export default {
     description() {
       console.log(this.specie.generalDescription);
       return this.specie.generalDescription;
-    },
-
-    backgroundImage() {
-      const imageLink = this.thumbnail;
-
-      if (imageLink) {
-        const style = {
-          background: `url(${imageLink}) center center no-repeat`,
-          backgroundSize: 'contain',
-        };
-        return style;
-      }
-      const defaultStyle = {
-        background: 'url(https://emojione.com/wp-content/uploads/assets/emojis/1f43e.svg)' +
-                    'top center no-repeat',
-      };
-      return defaultStyle;
     },
   },
   methods: {
