@@ -25,14 +25,18 @@ export const records = (state) => {
 export const selectedSpecieData = (state) => {
   const taxonId = state.selectedSpecie;
   if (!taxonId) return false;
-  return state.museumSpecies.find(ms => ms.vbaTaxonId === taxonId);
+  return state.museumSpecies.find(ms => ms.vbaTaxonId === taxonId) ||
+    state.ALASpecies.find(ms => ms.vbaTaxonId === taxonId);
 };
 
 export const specieMedia = state => (taxonId) => {
   // debugger;
   const mSpecie = state.museumSpecies.find(ms => ms.vbaTaxonId === taxonId);
   if (mSpecie) {
-    if (Object.prototype.hasOwnProperty.call(mSpecie, 'media')) return mSpecie.media;
+    if (Object.prototype.hasOwnProperty.call(mSpecie, 'media')) {
+      mSpecie.media.pop();
+      return mSpecie.media;
+    }
     return false;
   }
   const alaspecie = state.ALASpecies.find(ms => ms.vbaTaxonId === taxonId);

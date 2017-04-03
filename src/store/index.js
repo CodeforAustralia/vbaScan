@@ -10,6 +10,7 @@ const state = {
   records: [],
   museumSpecies: [],
   ALASpecies: [],
+  speciesData: {},
   selectedSpecie: null,
   token: null,
   position: null,

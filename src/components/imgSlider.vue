@@ -1,10 +1,10 @@
 <template>
   <div class="images">
-    <md-button class="nav-button">
+    <md-button @click.native="previous" class="nav-button">
       <md-icon>navigate_before</md-icon>
     </md-button>
     <img :src="currentImage">
-    <md-button class="nav-button">
+    <md-button @click.native="next" class="nav-button">
       <md-icon>navigate_next</md-icon>
     </md-button>
   </div>
@@ -30,10 +30,18 @@ export default {
       return false;
     },
     currentImage() {
+      console.log(this.selectedImg, this.media[this.selectedImg]);
       return this.media[this.selectedImg].small.uri;
     },
   },
   methods: {
+    next() {
+      if (this.selectedImg < this.media.length - 1) this.selectedImg += 1;
+    },
+    previous() {
+      console.log(this.media.length);
+      if (this.selectedImg > 0) this.selectedImg -= 1;
+    },
   },
 };
 </script>
