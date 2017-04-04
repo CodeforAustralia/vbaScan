@@ -10,7 +10,7 @@
             <md-icon v-else>view_list</md-icon>
           </div>
           </md-button>
-          <md-button>
+          <md-button @click.native="toggleRightSidenav">
             <md-icon id="menu-icon" >menu</md-icon>
           </md-button>
         </md-layout>
@@ -18,6 +18,20 @@
     </md-whiteframe>
     <md-progress v-if="this.$store.state.progress"class="md-accent" md-indeterminate></md-progress>
     <hello></hello>
+    <!-- sideNav -->
+    <md-sidenav class="md-right" ref="rightSidenav" @open="open('Right')" @close="close('Right')">
+    <md-toolbar>
+      <div class="md-toolbar-container">
+        <h3 class="md-title">Debugging</h3>
+      </div>
+    </md-toolbar>
+    </br></br>
+        <label for="weight">Range</label>
+        <input type="range" id="weight" min="10" value="10" max="2000" step="100">
+        </br>
+        <md-button class="md-raised md-accent" @click.native="closeRightSidenav">Close</md-button>
+        </md-sidenav>
+  </md-sidenav>
   </div>
 </template>
 
@@ -37,6 +51,12 @@ export default {
   methods: {
     switchView() {
       this.$store.dispatch('switchView');
+    },
+    toggleRightSidenav() {
+      this.$refs.rightSidenav.toggle();
+    },
+    closeRightSidenav() {
+      this.$refs.rightSidenav.close();
     },
   },
 };

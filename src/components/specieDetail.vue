@@ -9,15 +9,17 @@
     <imgSlider></imgSlider>
 
     <div class="description">
+    <template v-if="description"></template>
       <h3>Description :</h3>
       <p>{{description}}</p>
     </div>
+    <template v-if="specie.habitat"></template>
       <h3>Habitat :</h3>
       <p>{{specie.habitat}}</p>
-
+    <template v-if="specie.biology"></template>
       <h3>Biology :</h3>
       <p>{{specie.biology}}</p>
-
+    <template v-if="specie.distribution"></template>
       <h3>Distribution :</h3>
       <p>{{specie.distribution}}</p>
 
