@@ -8,9 +8,10 @@
     <div class="md-list-text-container">
       <span>{{record.commonNme}}</span>
       <span>{{record.scientificDisplayNme}}</span>
-      <p> {{ obs }} Observation{{obs > 1 ? 's':''}} | Last from {{lastObs}}</p>
-      <!-- <p v-if="record.totalCountInt">Total count : {{record.totalCountInt}}</p> -->
-      <!-- <p v-else>Uncounted</p> -->
+      <div class="observation">
+        <p>{{ obs }} Observation{{obs > 1 ? 's':''}}<p>
+        <p>Last from {{lastObs}}</p>
+      </div>
     </div>
     <md-divider class="md-inset"></md-divider>
   </md-list-item>
@@ -75,5 +76,12 @@ export default {
 .md-avatar img {
   width: auto;
   height: auto;
+}
+.observation{
+  display: flex;
+  justify-content: space-between;
+}
+.observation p {
+  margin: 0;
 }
 </style>

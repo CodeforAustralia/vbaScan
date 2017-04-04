@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // eslint-disable-next-line
 export const searchALASpecies = (specieName) => axios
-  .get('http://bie.ala.org.au/ws/search.json', {
+  .get('https://bie.ala.org.au/ws/search.json', {
     params: {
       q: specieName,
     },
