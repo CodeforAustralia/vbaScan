@@ -10,8 +10,8 @@
       <md-select name="filter" id="filter" v-model="filter">
         <md-option value="records">Records</md-option>
         <md-option value="species">Species</md-option>
-        <md-option value="distance">Distance</md-option>
-        <md-option value="count">Count</md-option>
+        <!-- <md-option value="distance">Distance</md-option>
+        <md-option value="count">Count</md-option> -->
       </md-select>
     </md-input-container>
   </div>
@@ -43,7 +43,7 @@ export default {
         case 'count':
           return '↓ Count';
         default:
-          return '↑ Records';
+          return '↑ Species';
       }
     },
   },
