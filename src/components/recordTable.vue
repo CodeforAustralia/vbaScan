@@ -2,11 +2,11 @@
   <div>
     <listFilter></listFilter>
     <md-list class="list" v-if="this.$store.state.listView && this.$store.getters.records.length">
-        <listItem v-for="item in items" :record="item" :key="item.taxonId"
-          @click.native="selectSpecie(item.taxonId)"></listItem>
+        <listItem v-for="item in items" :record="item" 
+                  @click.native="selectSpecie(item.taxonId)"></listItem>
     </md-list>
     <md-layout v-else class="card-layout">
-      <gridListItem v-for="item in items" :record="item" :key="item.taxonId"></gridListItem>
+      <gridListItem v-for="item in items" :record="item"></gridListItem>
     </md-layout>
   </div>
 </template>

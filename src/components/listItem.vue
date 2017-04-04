@@ -8,8 +8,9 @@
     <div class="md-list-text-container">
       <span>{{record.commonNme}}</span>
       <span>{{record.scientificDisplayNme}}</span>
-      <p v-if="record.totalCountInt">Total count : {{record.totalCountInt}}</p>
-      <p v-else>Uncounted</p>
+      <p> {{ obs }} Observation{{obs > 1 ? 's':''}} | Last from {{lastObs}}</p>
+      <!-- <p v-if="record.totalCountInt">Total count : {{record.totalCountInt}}</p> -->
+      <!-- <p v-else>Uncounted</p> -->
     </div>
     <md-divider class="md-inset"></md-divider>
   </md-list-item>
@@ -28,8 +29,31 @@ export default {
     thumbnail() {
       const media = this.$store.getters.specieMedia(this.record.taxonId);
       if (!media) return false;
+      console.log(this.record.commonNme, media, media.length);
       if (Object.prototype.hasOwnProperty.call(media[0], 'small')) return media[0].small.uri;
+      if (Object.prototype.hasOwnProperty.call(media[0], 'thumbnail')) return media[0].thumbnail.uri;
       return false;
+    },
+    obs() {
+      const id = this.record.taxonId;
+      const obs = this.$store.getters.records.reduce((acc, record) => {
+        if (record.taxonId === id) return acc + 1;
+        return acc;
+      }, 0);
+      return obs;
+    },
+    lastObs() {
+      const id = this.record.taxonId;
+      const obs = this.$store.getters.records.reduce((acc, record) => {
+        if (record.taxonId === id) acc.push(record);
+        return acc;
+      }, []);
+      console.log(obs);
+      const sorted = obs.sort((a, b) => {
+        return b.surveyStartSdt - a.surveyStartSdt;
+      });
+      console.log('sorted', sorted);
+      return new Date(sorted[0].surveyStartSdt).getFullYear();
     },
   },
 };

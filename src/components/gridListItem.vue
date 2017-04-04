@@ -15,6 +15,7 @@ export default {
     thumbnail() {
       const media = this.$store.getters.specieMedia(this.record.taxonId);
       if (!media) return false;
+      console.log(media);
       if (Object.prototype.hasOwnProperty.call(media[0], 'small')) return media[0].small.uri;
       return false;
     },

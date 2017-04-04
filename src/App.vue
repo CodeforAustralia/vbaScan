@@ -5,8 +5,10 @@
         <img id="logo" src="https://www.wildlife.vic.gov.au/__data/assets/git_bridge/0015/177/deploy/mysource_files/logo-copy.svg" alt="DELWP logo">
         <md-layout class="toolbar-icons">
           <md-button v-if="this.$store.state.records.length" class="md-icon-button" @click.native="switchView()">
+          <div v-if="!this.$store.state.selectedSpecie">
             <md-icon v-if="listView">view_module</md-icon>
             <md-icon v-else>view_list</md-icon>
+          </div>
           </md-button>
           <md-button>
             <md-icon id="menu-icon" >menu</md-icon>

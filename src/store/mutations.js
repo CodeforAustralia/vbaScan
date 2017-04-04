@@ -62,10 +62,7 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data }) => {
       'taxonomy',
       'whenActive',
       'whereToLook',
-    ].reduce((acc, prop) => {
-      // acc[prop] = data[prop];
-      return Object.assign({}, acc, { [prop]: data[prop] });
-    }, {});
+    ].reduce((acc, prop) => Object.assign({}, acc, { [prop]: data[prop] }), {});
     return Vue.set(state.speciesData, taxonId, subset);
   }
 
@@ -76,6 +73,9 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data }) => {
       },
       medium: {
         uri: data.imageUrl ? data.imageUrl.replace(/http:\/\//, 'https://') : null,
+      },
+      small: {
+        uri: data.thumbnailUrl ? data.thumbnailUrl.replace(/http:\/\//, 'https://') : null,
       },
       thumbnail: {
         uri: data.thumbnailUrl ? data.thumbnailUrl.replace(/http:\/\//, 'https://') : null,

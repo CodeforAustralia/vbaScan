@@ -23,11 +23,9 @@ export default {
   },
   computed: {
     media() {
-      const media = this.$store.getters.specieMedia(this.specie.vbaTaxonId);
-      if (!media) return false;
-      console.log('media', media);
-      if (Object.prototype.hasOwnProperty.call(media[0], 'small')) return media;
-      return false;
+      const media = this.specie.media;
+      if (media) return media;
+      return null;
     },
     currentImage() {
       console.log(this.selectedImg, this.media[this.selectedImg]);

@@ -5,54 +5,19 @@ export const records = (state) => {
   return state.records;
 };
 
-// export const museumSpecie = state => (taxonId) => {
-//   if (!state.museumSpecies.length) return false;
-//   const mSpecie = state.museumSpecies.find(ms => ms.vbaTaxonId === taxonId);
-//   return mSpecie;
-// };
-
-// export const alaSpecie = state => (taxonId) => {
-//   if (!state.ALASpecies.length) return false;
-//   return state.ALASpecies.find(s => s.vbaTaxonId === taxonId);
-// };
-
-// export const description = state => (taxonId) => {
-//   const mSpecie = state.museumSpecies.find(ms => ms.vbaTaxonId === taxonId);
-//   console.log(mSpecie, taxonId);
-//   return "Une belle espece sa c'est surs";
-// };
-
 export const selectedSpecieData = (state) => {
   const taxonId = state.selectedSpecie;
   if (!taxonId) return false;
-  return state.museumSpecies.find(ms => ms.vbaTaxonId === taxonId) ||
-    state.ALASpecies.find(ms => ms.vbaTaxonId === taxonId);
+  return state.speciesData[taxonId];
 };
 
 export const specieMedia = state => (taxonId) => {
-  // debugger;
-  const mSpecie = state.museumSpecies.find(ms => ms.vbaTaxonId === taxonId);
-  if (mSpecie) {
-    if (Object.prototype.hasOwnProperty.call(mSpecie, 'media')) {
-      mSpecie.media.pop();
-      return mSpecie.media;
-    }
-    return false;
-  }
-  const alaspecie = state.ALASpecies.find(ms => ms.vbaTaxonId === taxonId);
-  if (alaspecie) {
-    // debugger;
-    if (Object.prototype.hasOwnProperty.call(alaspecie, 'smallImageUrl')) {
-      return [{
-        small: {
-          uri: alaspecie.smallImageUrl,
-        },
-      }];
-    }
-    return false;
-  }
-  // if (Object.prototype.hasOwnProperty.call(mSpecie, 'media')) return mSpecie.media;
-  return false;
+  console.log('getter media for: ', taxonId);
+  // getting specie data
+  const specie = state.speciesData[taxonId];
+  console.log(specie);
+  const media = specie ? specie.media : null;
+  return media;
 };
 
 export const token = (state) => {

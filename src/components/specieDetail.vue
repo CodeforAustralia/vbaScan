@@ -20,17 +20,21 @@
 
       <h3>Distribution :</h3>
       <p>{{specie.distribution}}</p>
-    <div class="records"></div>
+
+    <h2>Observation : </h2>
+    <recordList></recordList>
   </div>
 </template>
 
 <script>
 import imgSlider from './imgSlider';
+import recordList from './recordList';
 
 export default {
   // props: ['specie'],
   components: {
     imgSlider,
+    recordList,
   },
   data() {
     const data = { // eslint-disable-line no-unused-vars
@@ -39,14 +43,6 @@ export default {
     return data;
   },
   computed: {
-    thumbnail() {
-      const media = this.$store.getters.specieMedia(this.specie.vbaTaxonId);
-      if (!media) return false;
-      console.log('media', media);
-      if (Object.prototype.hasOwnProperty.call(media[0], 'small')) return media[0].small.uri;
-      return false;
-    },
-
     description() {
       console.log(this.specie.generalDescription);
       return this.specie.generalDescription;

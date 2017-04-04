@@ -54,6 +54,10 @@ export const fetchRecordsByLocation = ({ commit, state }) => {
             }
             const hydratedSpecie = Object.assign({}, specieData, { vbaTaxonId: specie.taxonId });
             // console.log(hydratedSpecie);
+            commit('ADD_SPECIE_DATA', {
+              taxonId: specie.taxonId,
+              data: specieData,
+            });
             return commit('ADD_MUSEUM_SPECIES', hydratedSpecie);
           });
       });
