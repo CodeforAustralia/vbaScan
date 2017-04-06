@@ -37,7 +37,10 @@ export const fetchRecordsByLocation = ({ commit, state }) => {
       const species = filterDuplicateSpecies(records);
       species.forEach((specie) => {
         // Make AJAX call to museum vic with specie scientific name
-        searchMuseumSpecies(specie.scientificDisplayNme)
+        searchMuseumSpecies({
+          scientificName: specie.scientificDisplayNme,
+          commonName: specie.commonNme,
+        })
           .then((specieData) => {
             // If the Vic museum doesnt return data, lookup the ALA
             if (!specieData) {
