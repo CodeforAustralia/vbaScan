@@ -20,18 +20,20 @@
     <hello></hello>
     <!-- sideNav -->
     <md-sidenav class="md-right" ref="rightSidenav" @open="open('Right')" @close="close('Right')">
-    <md-toolbar>
-      <div class="md-toolbar-container">
-        <h3 class="md-title">Debugging</h3>
-      </div>
-    </md-toolbar>
-    </br></br>
-        <label for="weight">Range</label>
-        <input type="range" id="weight" min="10" value="10" max="2000" step="100">
-        </br>
-        <md-button class="md-raised md-accent" @click.native="closeRightSidenav">Close</md-button>
-        </md-sidenav>
-  </md-sidenav>
+      <md-toolbar>
+        <div class="md-toolbar-container">
+          <h3 class="md-title">Debugging</h3>
+        </div>
+      </md-toolbar>
+
+      </br>
+      </br>
+
+      <label for="weight">Range</label>
+      <input type="range" id="weight" min="10" value="10" max="2000" step="100">
+      </br>
+      <md-button class="md-raised md-accent" @click.native="closeRightSidenav">Close</md-button>
+    </md-sidenav>
   </div>
 </template>
 
@@ -70,6 +72,9 @@ export default {
   /*text-align: center;*/
   color: #2c3e50;
   /*margin-top: 60px;*/
+  overflow-x: hidden;
+  position: relative;
+  height: 100vh;
 }
 .main-toolbar {
   /*position: relative;*/
