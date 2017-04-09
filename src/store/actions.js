@@ -37,15 +37,18 @@ export const fetchRecordsByLocation = ({ commit, state }) => {
       const species = filterDuplicateSpecies(records);
       species.forEach((specie) => {
         // Make AJAX call to museum vic with specie scientific name
-        searchMuseumSpecies({
+        const taxonomy = {
           scientificName: specie.scientificDisplayNme,
           commonName: specie.commonNme,
-        })
+        };
+
+        searchMuseumSpecies(taxonomy)
           .then((specieData) => {
             // If the Vic museum doesnt return data, lookup the ALA
             if (!specieData) {
-              return searchALASpecies(specie.scientificDisplayNme)
+              return searchALASpecies(taxonomy)
               .then((alaSpecieData) => {
+                console.log(alaSpecieData);
                 const hydratedSpecie = Object
                   .assign({}, alaSpecieData, { vbaTaxonId: specie.taxonId });
                 commit('ADD_ALA_SPECIES', hydratedSpecie);
@@ -79,31 +82,46 @@ export const hydrateSpecies = ({ commit }, specieName) => {
 };
 
 export const getPosition = ({ commit }) => {
-  const options = {
-    enableHighAccuracy: true,
-    timeout: 10000,
-    maximumAge: 0,
-  };
-  return new Promise((resolve, reject) => {
+  // const options = {
+  //   enableHighAccuracy: true,
+  //   timeout: 10000,
+  //   maximumAge: 0,
+  // };
+  // return new Promise((resolve, reject) => {
   // eslint-disable-next-line
-    if (!('geolocation' in navigator)) reject(new Error('no geolocation feature present on device'));
+  //   if (!('geolocation' in navigator)) reject(new Error('no geolocation feature present on device'));
 
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const accu = pos.coords.accuracy;
-        const lat = pos.coords.latitude;
-        const long = pos.coords.longitude;
-        console.log(`Position aquired, accuracy : ${pos.coords.accuracy}`);
-        resolve({ accu, lat, long });
-      },
-      (err) => {
-        reject(new Error(err.message));
-      }, options);
+  //   navigator.geolocation.getCurrentPosition(
+  //     (pos) => {
+  //       const accu = pos.coords.accuracy;
+  //       const lat = pos.coords.latitude;
+  //       const long = pos.coords.longitude;
+  //       console.log(`Position aquired, accuracy : ${pos.coords.accuracy}`);
+  //       resolve({ accu, lat, long });
+  //     },
+  //     (err) => {
+  //       reject(new Error(err.message));
+  //     }, options);
+  // })
+
+  // eslint-disable-next-line
+  return new Promise((resolve, reject) => {
+    resolve({ accu: '12', lat: '-37.330758', long: '148.0863632' });
   })
 
   // eslint-disable-next-line
   // return new Promise((resolve, reject) => {
-  //   resolve({ accu: '12', lat: '-37.809610', long: '144.972052' });
+  //   const minLat = 36.283390;
+  //   const maxLat = 38.237969;
+  //   const minLong = 141.123133;
+  //   const maxLong = 147.858152;
+
+  // eslint-disable-next-line
+  //   const randLat = Math.round((Math.random()*(maxLat-minLat+1)+minLat) * 1000000 ) / 1000000;
+  // eslint-disable-next-line
+  //   const randLong = Math.round((Math.random()*(maxLong-minLong+1)+minLong) * 1000000 ) / 1000000;
+  //   console.log(`${randLat} ${randLong}`);
+  //   resolve({ accu: '12', lat: -`${randLat}`, long: `${randLong}` });
   // })
   .then(position => commit('SET_POSITION', position))
   .catch(error => console.log(error));

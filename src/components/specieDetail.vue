@@ -9,20 +9,23 @@
     <imgSlider></imgSlider>
 
     <div class="description">
-    <template v-if="description"></template>
+    <template v-if="description">
       <h3>Description :</h3>
       <p>{{description}}</p>
+    </template>
     </div>
-    <template v-if="specie.habitat"></template>
+    <template v-if="specie.habitat">
       <h3>Habitat :</h3>
       <p>{{specie.habitat}}</p>
-    <template v-if="specie.biology"></template>
+    </template>
+    <template v-if="specie.biology">
       <h3>Biology :</h3>
       <p>{{specie.biology}}</p>
-    <template v-if="specie.distribution"></template>
+    </template>
+    <template v-if="specie.distribution">
       <h3>Distribution :</h3>
       <p>{{specie.distribution}}</p>
-
+    </template>
     <h2>Observation : </h2>
     <recordList></recordList>
   </div>

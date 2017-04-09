@@ -1,16 +1,6 @@
 <!-- date , methods, count , name, project Id, accuracy -->
 <template>
   <div>
-<!--     <md-card v-for="record in records" :record="record" >
-      <md-card-content>
-        <p>Observer : {{record.observerFullName}}</p>
-        <p>Method : {{ record.samplingMethodCde}}</p>
-        <p>Date : {{new Date(record.surveyStartSdt).toDateString()}}</p>
-        <p>Count : {{record.totalCountInt}}</p>
-        <p>Accuracy: {{record.latLongAccuracyddNum}} m</p>
-        <p>Project Id: {{record.projectId}}</p>
-      </md-card-content>
-    </md-card> -->
     <md-list class="list">
       <md-list-item v-for="record in records" :record="record"  class="md-list-item">
         <div class="md-list-text-container">

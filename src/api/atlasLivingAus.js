@@ -2,18 +2,19 @@
 import axios from 'axios';
 
 // eslint-disable-next-line
-export const searchALASpecies = (specieName) => axios
-  .get('https://bie.ala.org.au/ws/search.json', {
+export const searchALASpecies = (taxonomy) => {
+  const queriedSpecie = taxonomy;
+
+  return axios.get('https://bie.ala.org.au/ws/search.json', {
     params: {
-      q: specieName,
-    },
-  })
-  .then((res) => {
-    // only return VicMuseum species matching the initial query
-    const specie = res.data.searchResults.results
-      .find((s) => {
-        return s.scientificName === res.config.params.q;
-      });
-    return specie;
-  })
-  .catch(error => console.log(error.message));
+      q: taxonomy.scientificName,
+    } })
+    .then((res) => {
+      const data = res.data.searchResults.results;
+      // only return VicMuseum species matching the initial query
+      const specie = data.find(s => s.scientificName === queriedSpecie.scientificName ||
+          s.commonName === queriedSpecie.commonName);
+      return specie;
+    })
+    .catch(error => console.log(error.message));
+};

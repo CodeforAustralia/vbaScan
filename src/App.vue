@@ -16,10 +16,10 @@
         </md-layout>
       </md-toolbar>
     </md-whiteframe>
-    <md-progress v-if="this.$store.state.progress"class="md-accent" md-indeterminate></md-progress>
+    <md-progress v-if="this.$store.state.progress" class="md-accent" md-indeterminate></md-progress>
     <hello></hello>
     <!-- sideNav -->
-    <md-sidenav class="md-right" ref="rightSidenav" @open="open('Right')" @close="close('Right')">
+    <md-sidenav class="md-right md-fixed" ref="rightSidenav" @open="open('Right')" @close="close('Right')">
       <md-toolbar>
         <div class="md-toolbar-container">
           <h3 class="md-title">Debugging</h3>
@@ -98,5 +98,10 @@ background: linear-gradient(120deg, #201547 0%,#201547 74%,#00b2a9 70%,#00b2a9 8
 }
 #menu-icon {
   color: #201547;
+}
+
+.md-sidenav {
+  z-index: 10;
+  position: fixed !important;
 }
 </style>

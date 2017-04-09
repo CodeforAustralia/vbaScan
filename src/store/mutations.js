@@ -39,6 +39,7 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data }) => {
   const isMuseumData = Object.prototype.hasOwnProperty.call(data, 'taxonomy');
   if (isMuseumData) {
     // reduce the data object to a subset
+    // console.log(isMuseumData);
     const subset = [
       'hazards',
       'animalType',
@@ -85,15 +86,15 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data }) => {
       family: getValue(data.family),
       kingdom: getValue(data.kingdom),
       commonName: getValue(data.commonName),
+      taxonName: getValue(data.name),
       // class: getValue(data.class),
       // genus: getValue(data.genus),
       // order: getValue(data.order),
       // phylum: getValue(data.order),
       // subclass: getValue(data.subclass),
-      taxonName: getValue(data.name),
     },
   };
-  // console.log(specieTemplate);
+  console.log(specieTemplate);
   return Vue.set(state.speciesData, taxonId, specieTemplate);
 };
 

@@ -30,7 +30,7 @@ export default {
     thumbnail() {
       const media = this.$store.getters.specieMedia(this.record.taxonId);
       if (!media) return false;
-      console.log(this.record.commonNme, media, media.length);
+      // console.log(this.record.commonNme, media, media.length);
       if (Object.prototype.hasOwnProperty.call(media[0], 'small')) return media[0].small.uri;
       if (Object.prototype.hasOwnProperty.call(media[0], 'thumbnail')) return media[0].thumbnail.uri;
       return false;
@@ -49,11 +49,11 @@ export default {
         if (record.taxonId === id) acc.push(record);
         return acc;
       }, []);
-      console.log(obs);
+      // console.log(obs);
       const sorted = obs.sort((a, b) => {
         return b.surveyStartSdt - a.surveyStartSdt;
       });
-      console.log('sorted', sorted);
+      // console.log('sorted', sorted);
       return new Date(sorted[0].surveyStartSdt).getFullYear();
     },
   },
@@ -74,8 +74,9 @@ export default {
 }
 
 .md-avatar img {
-  width: auto;
-  height: auto;
+  /*width: 100%;*/
+  /*height: 100%;*/
+  object-fit: cover;
 }
 .observation{
   display: flex;
