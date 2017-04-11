@@ -1,10 +1,14 @@
 <template>
   <div id="container">
+  <div class="taxonomy">
     <md-button @click.native="close">
       <md-icon>arrow_back</md-icon>
     </md-button>
-    <h1>{{specie.taxonomy.commonName}}</h1>
-    <h2>{{specie.taxonomy.taxonName}}</h2>
+    <div class="names">
+      <h1>{{specie.taxonomy.commonName}}</h1>
+      <h2>{{specie.taxonomy.taxonName}}</h2>
+    </div>
+  </div>
 
     <imgSlider v-if="specie.media"></imgSlider>
 
@@ -26,7 +30,7 @@
       <h3>Distribution :</h3>
       <p>{{specie.distribution}}</p>
     </template>
-    <h2>Observation : </h2>
+    <h2 class="margin-left">Observation : </h2>
     <recordList></recordList>
   </div>
 </template>
@@ -63,7 +67,7 @@ export default {
 
 <style scoped>
 #container {
-  margin: 1rem;
+  /*margin: 1rem;*/
 }
 
 .images {
@@ -87,5 +91,14 @@ export default {
   color: white;
   justify-content: center;
   background-color: rgba(128,128,128,.4);
+}
+
+.taxonomy {
+  display: flex;
+  flex-direction: row;
+}
+
+.margin-left {
+  margin-left: 1rem;
 }
 </style>

@@ -1,6 +1,54 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable arrow-body-style */
 
+function convertConservation(status) {
+  const threatenedRegex = [
+    /L/,
+    /P\s*L/,
+    /cr/,
+    /cr\s*dbt/,
+    /cr\s*L/,
+    /dd\s*L/,
+    /en\s*/,
+    /en\s*I/,
+    /en\s*L/,
+    /en\s*L\s*#/,
+    /ex\s*L/,
+    /k\s*\*/,
+    /k\s*L/,
+    /nt\s*L/,
+    /r/,
+    /r\s*#/,
+    /r\s*D/,
+    /r\s*L/,
+    /r\s*N/,
+    /r\s*X/,
+    /rx\s*L/,
+    /vu\s*/,
+    /vu\s*#/,
+    /vu\s*D/,
+    /vu\s*L/,
+    /vu\s*X/,
+    /CR\s*cr\s*L/,
+    /CR\s*dd\s*L/];
+
+  const str = status.trim();
+  if (str === '*') {
+    console.log(`status ${status} is Not native`);
+    return 'Not native';
+  }
+  const isThreatened = threatenedRegex.some((regex) => {
+    return str.search(regex) !== -1;
+  });
+
+  console.log(`status ${status} is Threatened ? ${isThreatened}`);
+
+  if (isThreatened) {
+    return 'Threatened';
+  }
+  return null;
+}
+
 export const records = (state) => {
   return state.records;
 };
@@ -28,6 +76,7 @@ export const species = (state) => {
       commonNme: specie.commonNme,
       scientificDisplayNme: specie.scientificDisplayNme,
       taxonId: specie.taxonId,
+      conservationStatus: convertConservation(specie.conservationStatus),
       totalCountInt: Object.prototype.hasOwnProperty.call(specie, 'totalCountInt')
         ? specie.totalCountInt
         : null,

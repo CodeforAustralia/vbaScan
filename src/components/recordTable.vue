@@ -27,7 +27,7 @@ export default {
     items() {
       switch (this.$store.state.filter) {
         case 'species':
-          return this.$store.getters.species.slice(0, 10);
+          return this.$store.getters.species.slice(0, 100);
         default:
           return this.$store.getters.records.slice(0, 10);
       }

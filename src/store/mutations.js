@@ -73,7 +73,7 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data, vbaData }) => {
     );
     return Vue.set(state.speciesData, taxonId, subset);
   }
-  console.log(data);
+  // console.log(data);
   const specieTemplate = {
     taxonomy: {
       family: getValue(data.family),

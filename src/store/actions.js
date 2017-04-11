@@ -28,7 +28,7 @@ export const fetchRecordsByLocation = ({ commit, state }) => {
   const position = {
     lat: state.position.lat,
     long: state.position.long,
-    rad: 250,
+    rad: 100,
   };
 
   return recordsByPosition(position, token)
@@ -92,30 +92,31 @@ export const hydrateSpecies = ({ commit }, specieName) => {
 };
 
 export const getPosition = ({ commit }) => {
-  const options = {
-    enableHighAccuracy: true,
-    timeout: 10000,
-    maximumAge: 0,
-  };
-  return new Promise((resolve, reject) => {
-    if (!('geolocation' in navigator)) reject(new Error('no geolocation feature present on device'));
-
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const accu = pos.coords.accuracy;
-        const lat = pos.coords.latitude;
-        const long = pos.coords.longitude;
-        console.log(`Position aquired, accuracy : ${pos.coords.accuracy}`);
-        resolve({ accu, lat, long });
-      },
-      (err) => {
-        reject(new Error(err.message));
-      }, options);
-  })
-  // eslint-disable-next-line
+  // const options = {
+  //   enableHighAccuracy: true,
+  //   timeout: 10000,
+  //   maximumAge: 0,
+  // };
   // return new Promise((resolve, reject) => {
-  //   resolve({ accu: '12', lat: '-39.11928', long: '146.388329' });
+  // eslint-disable-next-line
+  //   if (!('geolocation' in navigator)) reject(new Error('no geolocation feature present on device'));
+
+  //   navigator.geolocation.getCurrentPosition(
+  //     (pos) => {
+  //       const accu = pos.coords.accuracy;
+  //       const lat = pos.coords.latitude;
+  //       const long = pos.coords.longitude;
+  //       console.log(`Position aquired, accuracy : ${pos.coords.accuracy}`);
+  //       resolve({ accu, lat, long });
+  //     },
+  //     (err) => {
+  //       reject(new Error(err.message));
+  //     }, options);
   // })
+  // eslint-disable-next-line
+  return new Promise((resolve, reject) => {
+    resolve({ accu: '12', lat: '-37.711318', long: '145.071971' });
+  })
 
   // eslint-disable-next-line
   // return new Promise((resolve, reject) => {

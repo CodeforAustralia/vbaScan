@@ -29,8 +29,9 @@
       </br>
       </br>
 
-      <label for="weight">Range</label>
-      <input type="range" id="weight" min="10" value="10" max="2000" step="100">
+      <label for="weight">Range : 250 m</label>
+      <!-- <input type="range" id="weight" min="10" value="10" max="2000" step="100"> -->
+      <!-- <input type="range"> -->
       </br>
       <md-button class="md-raised md-accent" @click.native="closeRightSidenav">Close</md-button>
     </md-sidenav>

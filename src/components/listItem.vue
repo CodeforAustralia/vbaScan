@@ -6,13 +6,13 @@
     </md-avatar>
 
     <div class="md-list-text-container">
-    <div class="title">
+    <div>
       <div class="taxonomy">
-        <span>{{record.commonNme}}</span>
-        <span>{{record.scientificDisplayNme}}</span>
-      </div>
-      <div class="status">
-        <p>status</p>
+        <div class="top-row">
+          <p>{{record.commonNme}}</p>
+          <p v-if="record.conservationStatus" class="status">{{record.conservationStatus}}</p>
+        </div>
+        <p>{{record.scientificDisplayNme}}</p>
       </div>
     </div>
       <div class="observation">
@@ -94,19 +94,31 @@ export default {
 }
 
 .title {
+/*  display: flex;
+  justify-content: space-between;*/
+}
+.top-row {
   display: flex;
   justify-content: space-between;
 }
-
 .taxonomy {
   display: flex;
   flex-direction: column;
 }
 
-.status p {
+.taxonomy p {
+  overflow: auto;
+  text-overflow: ellipsis;
+}
+
+.status {
   background-color: #f8e81c;
   padding: 0 5px 0 5px;
   border-radius: 5px;
+  margin: 0;
+}
+
+p {
   margin: 0;
 }
 </style>
