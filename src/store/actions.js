@@ -36,35 +36,45 @@ export const fetchRecordsByLocation = ({ commit, state }) => {
       commit('SET_RECORDS', records);
       const species = filterDuplicateSpecies(records);
       species.forEach((specie) => {
-        // Make AJAX call to museum vic with specie scientific name
         const taxonomy = {
           scientificName: specie.scientificDisplayNme,
           commonName: specie.commonNme,
         };
 
         searchMuseumSpecies(taxonomy)
-          .then((specieData) => {
+          .then((museumSpecie) => {
+            if (museumSpecie) {
+              const hydratedSpecie = Object
+                .assign({}, museumSpecie, { vbaTaxonId: specie.taxonId });
+              commit('ADD_SPECIE_DATA', {
+                taxonId: specie.taxonId,
+                data: museumSpecie,
+                vbaData: specie,
+              });
+              return commit('ADD_MUSEUM_SPECIES', hydratedSpecie);
+            }
             // If the Vic museum doesnt return data, lookup the ALA
-            if (!specieData) {
-              return searchALASpecies(taxonomy)
-              .then((alaSpecieData) => {
-                console.log(alaSpecieData);
-                const hydratedSpecie = Object
-                  .assign({}, alaSpecieData, { vbaTaxonId: specie.taxonId });
-                commit('ADD_ALA_SPECIES', hydratedSpecie);
-                commit('ADD_SPECIE_DATA', {
+            return searchALASpecies(taxonomy)
+              .then((alaSpecie) => {
+                if (alaSpecie) {
+                  const hydratedSpecie = Object
+                    .assign({}, alaSpecie, { vbaTaxonId: specie.taxonId });
+                  commit('ADD_ALA_SPECIES', hydratedSpecie);
+                  return commit('ADD_SPECIE_DATA', {
+                    taxonId: specie.taxonId,
+                    data: alaSpecie,
+                    vbaData: specie,
+                  });
+                }
+                return commit('ADD_SPECIE_DATA', {
                   taxonId: specie.taxonId,
-                  data: alaSpecieData,
+                  data: {
+                    commonName: specie.commonNme,
+                    name: specie.scientificDisplayNme,
+                  },
+                  vbaData: specie,
                 });
               });
-            }
-            const hydratedSpecie = Object.assign({}, specieData, { vbaTaxonId: specie.taxonId });
-            // console.log(hydratedSpecie);
-            commit('ADD_SPECIE_DATA', {
-              taxonId: specie.taxonId,
-              data: specieData,
-            });
-            return commit('ADD_MUSEUM_SPECIES', hydratedSpecie);
           });
       });
     });
@@ -82,32 +92,30 @@ export const hydrateSpecies = ({ commit }, specieName) => {
 };
 
 export const getPosition = ({ commit }) => {
-  // const options = {
-  //   enableHighAccuracy: true,
-  //   timeout: 10000,
-  //   maximumAge: 0,
-  // };
-  // return new Promise((resolve, reject) => {
-  // eslint-disable-next-line
-  //   if (!('geolocation' in navigator)) reject(new Error('no geolocation feature present on device'));
-
-  //   navigator.geolocation.getCurrentPosition(
-  //     (pos) => {
-  //       const accu = pos.coords.accuracy;
-  //       const lat = pos.coords.latitude;
-  //       const long = pos.coords.longitude;
-  //       console.log(`Position aquired, accuracy : ${pos.coords.accuracy}`);
-  //       resolve({ accu, lat, long });
-  //     },
-  //     (err) => {
-  //       reject(new Error(err.message));
-  //     }, options);
-  // })
-
-  // eslint-disable-next-line
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 10000,
+    maximumAge: 0,
+  };
   return new Promise((resolve, reject) => {
-    resolve({ accu: '12', lat: '-37.330758', long: '148.0863632' });
+    if (!('geolocation' in navigator)) reject(new Error('no geolocation feature present on device'));
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const accu = pos.coords.accuracy;
+        const lat = pos.coords.latitude;
+        const long = pos.coords.longitude;
+        console.log(`Position aquired, accuracy : ${pos.coords.accuracy}`);
+        resolve({ accu, lat, long });
+      },
+      (err) => {
+        reject(new Error(err.message));
+      }, options);
   })
+  // eslint-disable-next-line
+  // return new Promise((resolve, reject) => {
+  //   resolve({ accu: '12', lat: '-39.11928', long: '146.388329' });
+  // })
 
   // eslint-disable-next-line
   // return new Promise((resolve, reject) => {
@@ -117,11 +125,11 @@ export const getPosition = ({ commit }) => {
   //   const maxLong = 147.858152;
 
   // eslint-disable-next-line
-  //   const randLat = Math.round((Math.random()*(maxLat-minLat+1)+minLat) * 1000000 ) / 1000000;
+    // const randLat = Math.round((Math.random()*(maxLat-minLat+1)+minLat) * 1000000 ) / 1000000;
   // eslint-disable-next-line
-  //   const randLong = Math.round((Math.random()*(maxLong-minLong+1)+minLong) * 1000000 ) / 1000000;
-  //   console.log(`${randLat} ${randLong}`);
-  //   resolve({ accu: '12', lat: -`${randLat}`, long: `${randLong}` });
+    // const randLong = Math.round((Math.random()*(maxLong-minLong+1)+minLong) * 1000000 ) / 1000000;
+    // console.log(`${randLat} ${randLong}`);
+    // resolve({ accu: '12', lat: -`${randLat}`, long: `${randLong}` });
   // })
   .then(position => commit('SET_POSITION', position))
   .catch(error => console.log(error));

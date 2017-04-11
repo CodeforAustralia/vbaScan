@@ -6,7 +6,7 @@
     <h1>{{specie.taxonomy.commonName}}</h1>
     <h2>{{specie.taxonomy.taxonName}}</h2>
 
-    <imgSlider></imgSlider>
+    <imgSlider v-if="specie.media"></imgSlider>
 
     <div class="description">
     <template v-if="description">
@@ -36,7 +36,6 @@ import imgSlider from './imgSlider';
 import recordList from './recordList';
 
 export default {
-  // props: ['specie'],
   components: {
     imgSlider,
     recordList,

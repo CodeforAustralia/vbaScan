@@ -12,10 +12,8 @@ export const selectedSpecieData = (state) => {
 };
 
 export const specieMedia = state => (taxonId) => {
-  console.log('getter media for: ', taxonId);
   // getting specie data
   const specie = state.speciesData[taxonId];
-  console.log(specie);
   const media = specie ? specie.media : null;
   return media;
 };

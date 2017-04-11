@@ -19,7 +19,7 @@
     <md-progress v-if="this.$store.state.progress" class="md-accent" md-indeterminate></md-progress>
     <hello></hello>
     <!-- sideNav -->
-    <md-sidenav class="md-right md-fixed" ref="rightSidenav" @open="open('Right')" @close="close('Right')">
+    <md-sidenav class="md-right md-fixed" ref="rightSidenav">
       <md-toolbar>
         <div class="md-toolbar-container">
           <h3 class="md-title">Debugging</h3>

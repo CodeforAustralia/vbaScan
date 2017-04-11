@@ -11,7 +11,7 @@
           <span>Accuracy: {{record.latLongAccuracyddNum}} m</span>
           <span>Project Id: {{record.projectId}}</span>
         </div>
-        <md-divider class="md-inset"></md-divider>
+        <!-- <md-divider class="md-inset"></md-divider> -->
       </md-list-item>
     </md-list>
   </div>
@@ -40,5 +40,8 @@ export default {
 }
 .md-theme-default.md-card {
   background-color: white;
+}
+.md-list-item {
+  border-bottom: 1px solid #e0e0e0;
 }
 </style>

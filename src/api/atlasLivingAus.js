@@ -8,7 +8,8 @@ export const searchALASpecies = (taxonomy) => {
   return axios.get('https://bie.ala.org.au/ws/search.json', {
     params: {
       q: taxonomy.scientificName,
-    } })
+    },
+  })
     .then((res) => {
       const data = res.data.searchResults.results;
       // only return VicMuseum species matching the initial query

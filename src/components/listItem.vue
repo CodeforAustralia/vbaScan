@@ -6,8 +6,15 @@
     </md-avatar>
 
     <div class="md-list-text-container">
-      <span>{{record.commonNme}}</span>
-      <span>{{record.scientificDisplayNme}}</span>
+    <div class="title">
+      <div class="taxonomy">
+        <span>{{record.commonNme}}</span>
+        <span>{{record.scientificDisplayNme}}</span>
+      </div>
+      <div class="status">
+        <p>status</p>
+      </div>
+    </div>
       <div class="observation">
         <p>{{ obs }} Observation{{obs > 1 ? 's':''}}<p>
         <p>Last from {{lastObs}}</p>
@@ -83,6 +90,23 @@ export default {
   justify-content: space-between;
 }
 .observation p {
+  margin: 0;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.taxonomy {
+  display: flex;
+  flex-direction: column;
+}
+
+.status p {
+  background-color: #f8e81c;
+  padding: 0 5px 0 5px;
+  border-radius: 5px;
   margin: 0;
 }
 </style>

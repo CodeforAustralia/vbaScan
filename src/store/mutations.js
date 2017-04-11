@@ -35,7 +35,7 @@ export const ADD_ALA_SPECIES = (state, specie) => {
   state.ALASpecies.push(specie);
 };
 
-export const ADD_SPECIE_DATA = (state, { taxonId, data }) => {
+export const ADD_SPECIE_DATA = (state, { taxonId, data, vbaData }) => {
   const isMuseumData = Object.prototype.hasOwnProperty.call(data, 'taxonomy');
   if (isMuseumData) {
     // reduce the data object to a subset
@@ -63,12 +63,33 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data }) => {
       'taxonomy',
       'whenActive',
       'whereToLook',
-    ].reduce((acc, prop) => Object.assign({}, acc, { [prop]: data[prop] }), {});
+    ].reduce((acc, prop) => Object.assign({}, acc,
+      { [prop]: data[prop] }),
+      { taxonomy: {
+        commonName: vbaData.scientificDisplayNme,
+        taxonName: vbaData.commonNme,
+      },
+      },
+    );
     return Vue.set(state.speciesData, taxonId, subset);
   }
-
+  console.log(data);
   const specieTemplate = {
-    media: [{
+    taxonomy: {
+      family: getValue(data.family),
+      kingdom: getValue(data.kingdom),
+      commonName: getValue(vbaData.scientificDisplayNme),
+      taxonName: getValue(vbaData.commonNme),
+      // class: getValue(data.class),
+      // genus: getValue(data.genus),
+      // order: getValue(data.order),
+      // phylum: getValue(data.order),
+      // subclass: getValue(data.subclass),
+    },
+  };
+
+  if (data.imageUrl) {
+    specieTemplate.media = [{
       large: {
         uri: data.largeImageUrl ? data.largeImageUrl.replace(/http:\/\//, 'https://') : null,
       },
@@ -81,20 +102,8 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data }) => {
       thumbnail: {
         uri: data.thumbnailUrl ? data.thumbnailUrl.replace(/http:\/\//, 'https://') : null,
       },
-    }],
-    taxonomy: {
-      family: getValue(data.family),
-      kingdom: getValue(data.kingdom),
-      commonName: getValue(data.commonName),
-      taxonName: getValue(data.name),
-      // class: getValue(data.class),
-      // genus: getValue(data.genus),
-      // order: getValue(data.order),
-      // phylum: getValue(data.order),
-      // subclass: getValue(data.subclass),
-    },
-  };
-  console.log(specieTemplate);
+    }];
+  }
   return Vue.set(state.speciesData, taxonId, specieTemplate);
 };
 
