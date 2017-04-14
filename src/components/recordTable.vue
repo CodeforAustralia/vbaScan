@@ -2,13 +2,13 @@
   <div>
     <listFilter></listFilter>
     <md-list class="list" v-if="this.$store.state.listView && this.$store.getters.records.length">
-        <listItem v-for="item in items" :record="item" 
+        <listItem v-for="(item, index) in items" :record="item" :key="index" 
                   @click.native="selectSpecie(item.taxonId)"></listItem>
     </md-list>
     <md-layout v-else class="card-layout">
       <gridListItem v-for="item in items" :record="item"></gridListItem>
     </md-layout>
-    <p v-id="this.$store.getters.species.length > 10">{{this.$store.getters.species.length}} items available, Only showing first 10</p>
+    <p v-if="this.$store.getters.species.length > 10">{{this.$store.getters.species.length}} items available, Only showing first 10</p>
   </div>
 </template>
 
@@ -26,10 +26,14 @@ export default {
   computed: {
     items() {
       switch (this.$store.state.filter) {
-        case 'species':
-          return this.$store.getters.species.slice(0, 100);
+        case 'commonName':
+          console.log('filter by commonName');
+          return this.byCommonName().slice(0, 9);
+        case 'scientificName':
+          console.log('filter by scientificName');
+          return this.byScientificName().slice(0, 11);
         default:
-          return this.$store.getters.records.slice(0, 10);
+          return this.byScientificName().slice(0, 11);
       }
     },
   },
@@ -38,7 +42,34 @@ export default {
       console.log(taxonId);
       this.$store.dispatch('setSpecieDetail', taxonId);
     },
+
+    byScientificName() {
+      const species = this.$store.getters.species;
+      const filteredSpecies = species.sort((a, b) => {
+        const nameA = a.scientificDisplayNme.toLowerCase();
+        const nameB = b.scientificDisplayNme.toLowerCase();
+
+        if (nameA < nameB) return -1; // sort string ascending
+        if (nameA > nameB) return 1;
+        return 0; // default return value (no sorting)
+      });
+      return filteredSpecies || [];
+    },
+
+    byCommonName() {
+      const species = this.$store.getters.species;
+      const filteredSpecies = species.sort((a, b) => {
+        const nameA = a.commonNme.toLowerCase();
+        const nameB = b.commonNme.toLowerCase();
+
+        if (nameA < nameB) return -1; // sort string ascending
+        if (nameA > nameB) return 1;
+        return 0; // default return value (no sorting)
+      });
+      return filteredSpecies || [];
+    },
   },
+
 };
 </script>
 

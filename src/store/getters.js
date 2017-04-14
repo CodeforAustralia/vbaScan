@@ -101,12 +101,5 @@ export const species = (state) => {
     return [...accuSpecies, specieClone];
   }, []);
 
-  return speciesList.sort((a, b) => {
-    const nameA = a.scientificDisplayNme.toLowerCase();
-    const nameB = b.scientificDisplayNme.toLowerCase();
-
-    if (nameA < nameB) return -1; // sort string ascending
-    if (nameA > nameB) return 1;
-    return 0; // default return value (no sorting)
-  });
+  return speciesList;
 };

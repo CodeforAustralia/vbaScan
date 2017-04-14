@@ -15,7 +15,7 @@ const state = {
   token: null,
   position: null,
   listView: true,
-  filter: 'species',
+  filter: 'scientificName',
   progress: false,
 };
 

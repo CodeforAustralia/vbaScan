@@ -8,8 +8,8 @@
     <md-input-container>
       <label for="filter">Sort by…</label>
       <md-select name="filter" id="filter" v-model="filter">
-        <md-option value="records">Records</md-option>
-        <md-option value="species">Species</md-option>
+        <md-option value="commonName">Common name</md-option>
+        <md-option value="scientificName">Scientific name</md-option>
         <!-- <md-option value="distance">Distance</md-option>
         <md-option value="count">Count</md-option> -->
       </md-select>
@@ -56,7 +56,8 @@ export default {
 };
 </script>
 
-<style >
+<style>
+
 .listFilter{
   margin: 16px 0 0 1rem;
 }

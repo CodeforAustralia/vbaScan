@@ -18,19 +18,29 @@
       <p>{{description}}</p>
     </template>
     </div>
-    <template v-if="specie.habitat">
-      <h3>Habitat :</h3>
-      <p>{{specie.habitat}}</p>
+    <template v-if="true">
+      <md-list id="data-list">
+        <md-list-item v-if="specie.habitat">
+          <span>Habitat</span>
+          <md-list-expand>
+            <p>{{specie.habitat}}</p>
+          </md-list-expand>
+        </md-list-item>
+        <md-list-item v-if="specie.biology">
+          <span>Biology</span>
+          <md-list-expand>
+            <p>{{specie.biology}}</p>
+          </md-list-expand>
+        </md-list-item>
+        <md-list-item v-if="specie.distribution">
+          <span>Distribution</span>
+          <md-list-expand>
+            <p>{{specie.distribution}}</p>
+          </md-list-expand>
+        </md-list-item>
+      </md-list>
     </template>
-    <template v-if="specie.biology">
-      <h3>Biology :</h3>
-      <p>{{specie.biology}}</p>
-    </template>
-    <template v-if="specie.distribution">
-      <h3>Distribution :</h3>
-      <p>{{specie.distribution}}</p>
-    </template>
-    <h2 class="margin-left">Observation : </h2>
+    <h3 class="margin-left">Observation : </h3>
     <recordList></recordList>
   </div>
 </template>
@@ -67,7 +77,7 @@ export default {
 
 <style scoped>
 #container {
-  /*margin: 1rem;*/
+  background-color: white;
 }
 
 .images {
@@ -98,7 +108,51 @@ export default {
   flex-direction: row;
 }
 
+.description {
+  margin: 1rem;
+}
 .margin-left {
   margin-left: 1rem;
 }
+</style>
+
+<style>
+#data-list {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: 0;
+}
+#data-list .dropdown-title i {
+  color: red;
+}
+
+#data-list .md-list-item .md-button-ghost {
+  background: none;
+}
+
+#data-list span {
+  color: #201547;
+  font-weight: 500;
+}
+
+#data-list i {
+  color: #00b7bd;
+}
+#data-list .md-active span {
+  color: white;
+  font-weight: 500;
+}
+
+#data-list .md-active i {
+  color: white;
+  font-weight: 500;
+}
+#data-list .md-active .md-list-item-container {
+  background-color: #00b7bd;
+}
+
+#data-list .md-list-item-expand:after {
+  height: 0;
+}
+
 </style>
