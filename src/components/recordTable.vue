@@ -26,6 +26,8 @@ export default {
   computed: {
     items() {
       switch (this.$store.state.filter) {
+        case 'distance':
+          return this.byDistance().slice(0, 10);
         case 'commonName':
           console.log('filter by commonName');
           return this.byCommonName().slice(0, 9);
@@ -41,6 +43,18 @@ export default {
     selectSpecie(taxonId) {
       console.log(taxonId);
       this.$store.dispatch('setSpecieDetail', taxonId);
+    },
+
+    byDistance() {
+      const species = this.$store.getters.species;
+      const speciesWithClosestRecord = species.map((specie) => {
+        const taxonId = specie.taxonId;
+        const records = this.$store.getters.records.filter(record => record.taxonId === taxonId);
+        const closestRecord = records.sort((a, b) => a.distance - b.distance)[0];
+        return Object.assign({}, specie, { closestRecordDistance: closestRecord.distance });
+      });
+      return speciesWithClosestRecord
+        .sort((a, b) => b.closestRecordDistance - a.closestRecordDistance);
     },
 
     byScientificName() {

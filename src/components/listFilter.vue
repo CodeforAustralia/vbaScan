@@ -8,10 +8,11 @@
     <md-input-container>
       <label for="filter">Sort by…</label>
       <md-select name="filter" id="filter" v-model="filter">
+      <div id="dropdown-options">
         <md-option value="commonName">Common name</md-option>
         <md-option value="scientificName">Scientific name</md-option>
-        <!-- <md-option value="distance">Distance</md-option>
-        <md-option value="count">Count</md-option> -->
+        <md-option value="distance">Distance</md-option>        
+      </div>
       </md-select>
     </md-input-container>
   </div>
@@ -56,10 +57,17 @@ export default {
 };
 </script>
 
-<style>
 
+<style scoped>
 .listFilter{
   margin: 16px 0 0 1rem;
+}
+
+</style>
+
+<style>
+#dropdown-options .md-option{
+  padding-top: 0;
 }
 
 .filterSelector{
@@ -74,7 +82,7 @@ export default {
   padding-left: 0.5rem;
 }
 
-:root .md-theme-default.md-menu-content .md-list{
+:root .md-theme-default .md-menu-content .md-list{
   background-color: white;
 }
 

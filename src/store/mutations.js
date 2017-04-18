@@ -27,14 +27,6 @@ export const SWITCH_PROGRESS = (state) => {
   Vue.set(state, 'progress', !state.progress);
 };
 
-export const ADD_MUSEUM_SPECIES = (state, specie) => {
-  state.museumSpecies.push(specie);
-};
-
-export const ADD_ALA_SPECIES = (state, specie) => {
-  state.ALASpecies.push(specie);
-};
-
 export const ADD_SPECIE_DATA = (state, { taxonId, data, vbaData }) => {
   const isMuseumData = Object.prototype.hasOwnProperty.call(data, 'taxonomy');
   if (isMuseumData) {

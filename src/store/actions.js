@@ -44,22 +44,16 @@ export const fetchRecordsByLocation = ({ commit, state }) => {
         searchMuseumSpecies(taxonomy)
           .then((museumSpecie) => {
             if (museumSpecie) {
-              const hydratedSpecie = Object
-                .assign({}, museumSpecie, { vbaTaxonId: specie.taxonId });
-              commit('ADD_SPECIE_DATA', {
+              return commit('ADD_SPECIE_DATA', {
                 taxonId: specie.taxonId,
                 data: museumSpecie,
                 vbaData: specie,
               });
-              return commit('ADD_MUSEUM_SPECIES', hydratedSpecie);
             }
             // If the Vic museum doesnt return data, lookup the ALA
             return searchALASpecies(taxonomy)
               .then((alaSpecie) => {
                 if (alaSpecie) {
-                  const hydratedSpecie = Object
-                    .assign({}, alaSpecie, { vbaTaxonId: specie.taxonId });
-                  commit('ADD_ALA_SPECIES', hydratedSpecie);
                   return commit('ADD_SPECIE_DATA', {
                     taxonId: specie.taxonId,
                     data: alaSpecie,
@@ -115,7 +109,7 @@ export const getPosition = ({ commit }) => {
   // })
   // eslint-disable-next-line
   return new Promise((resolve, reject) => {
-    resolve({ accu: '12', lat: '-37.797286', long: '145.018206' });
+    resolve({ accu: '12', lat: '-37.796531', long: '145.018314' });
   })
   // eslint-disable-next-line
   // return new Promise((resolve, reject) => {

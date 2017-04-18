@@ -49,8 +49,36 @@ function convertConservation(status) {
   return null;
 }
 
+const toRad = value => (value * Math.PI) / 180;
+
+const distanceBetweenCoordinates = (lat1, lon1, lat2, lon2) => {
+  const earthRadiusKm = 6371;
+
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const lat1Rad = toRad(lat1);
+  const lat2Rad = toRad(lat2);
+
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1Rad) * Math.cos(lat2Rad);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return earthRadiusKm * c;
+};
+
 export const records = (state) => {
-  return state.records;
+  // calcul distance from record to user's position.
+  const rawRecords = state.records;
+  const userLat = state.position.lat;
+  const userLon = state.position.long;
+
+  const recordsWithDistance = rawRecords.map((record) => {
+    const recordLat = record.latitudeddNum;
+    const recordLon = record.longitudeddNum;
+
+    const distance = distanceBetweenCoordinates(userLat, userLon, recordLat, recordLon);
+    return Object.assign({}, record, { distance });
+  });
+  return recordsWithDistance;
 };
 
 export const selectedSpecieData = (state) => {
@@ -60,7 +88,6 @@ export const selectedSpecieData = (state) => {
 };
 
 export const specieMedia = state => (taxonId) => {
-  // getting specie data
   const specie = state.speciesData[taxonId];
   const media = specie ? specie.media : null;
   return media;

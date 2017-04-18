@@ -27,6 +27,10 @@
         <p>Project Id :</p>
         <p>{{record.projectId}}</p>
       </div>
+      <div class="row">
+        <p>Distance :</p>
+        <p>{{(record.distance * 1000).toFixed()}} m</p>
+      </div>
       </md-whiteframe>
     </md-list>
   </div>

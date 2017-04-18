@@ -8,8 +8,6 @@ Vue.use(Vuex);
 
 const state = {
   records: [],
-  museumSpecies: [],
-  ALASpecies: [],
   speciesData: {},
   selectedSpecie: null,
   token: null,
