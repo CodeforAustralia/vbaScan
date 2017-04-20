@@ -85,7 +85,6 @@ export default {
   align-items: center;
   justify-content: space-between;
   height: 30vh;
-  /*overflow: auto*/
 }
 
 .images img {
@@ -114,6 +113,7 @@ export default {
 .margin-left {
   margin-left: 1rem;
 }
+
 </style>
 
 <style>

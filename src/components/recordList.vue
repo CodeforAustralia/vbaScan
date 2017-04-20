@@ -65,7 +65,7 @@ export default {
 }
 .md-whiteframe {
   background-color: white;
-  padding: .5rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
 }
 .row {
   display: flex;

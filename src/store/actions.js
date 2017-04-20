@@ -28,7 +28,7 @@ export const fetchRecordsByLocation = ({ commit, state }) => {
   const position = {
     lat: state.position.lat,
     long: state.position.long,
-    rad: 250,
+    rad: 500,
   };
 
   return recordsByPosition(position, token)
@@ -109,7 +109,7 @@ export const getPosition = ({ commit }) => {
   // })
   // eslint-disable-next-line
   return new Promise((resolve, reject) => {
-    resolve({ accu: '12', lat: '-37.796531', long: '145.018314' });
+    resolve({ accu: '12', lat: '-38.793254', long: '143.559937' });
   })
   // eslint-disable-next-line
   // return new Promise((resolve, reject) => {
