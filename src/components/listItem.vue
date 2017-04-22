@@ -2,17 +2,17 @@
   <md-list-item class="md-list-item">
     <md-avatar>
       <img :src="thumbnail" v-if="thumbnail">
-      <img src="https://emojione.com/wp-content/uploads/assets/emojis/1f43e.svg" alt="emoji" class="emoji" v-else>
+      <img src="https://raw.githubusercontent.com/Ranks/emojione/2.2.7/assets/png_128x128/1f43e.png" alt="emoji" class="emoji" v-else>
     </md-avatar>
 
     <div class="md-list-text-container">
     <div>
       <div class="taxonomy">
         <div class="top-row">
-          <p>{{record.commonNme}}</p>
-          <p v-if="record.conservationStatus" class="status">{{record.conservationStatus}}</p>
+          <p>{{item.commonNme}}</p>
+          <p v-if="item.conservationStatus" class="status">{{item.conservationStatus}}</p>
         </div>
-        <p>{{record.scientificDisplayNme}}</p>
+        <p>{{item.scientificDisplayNme}}</p>
       </div>
     </div>
       <div class="observation">
@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  props: ['record'],
+  props: ['item'],
   methods: {
     toggleRightSidenav() {
       const taxonId = parseInt(event.currentTarget.id, 10);
@@ -35,25 +35,25 @@ export default {
   },
   computed: {
     thumbnail() {
-      const media = this.$store.getters.specieMedia(this.record.taxonId);
+      const media = this.$store.getters.specieMedia(this.item.taxonId);
       if (!media) return false;
-      // console.log(this.record.commonNme, media, media.length);
+      // console.log(this.item.commonNme, media, media.length);
       if (Object.prototype.hasOwnProperty.call(media[0], 'small')) return media[0].small.uri;
       if (Object.prototype.hasOwnProperty.call(media[0], 'thumbnail')) return media[0].thumbnail.uri;
       return false;
     },
     obs() {
-      const id = this.record.taxonId;
-      const obs = this.$store.getters.records.reduce((acc, record) => {
-        if (record.taxonId === id) return acc + 1;
+      const id = this.item.taxonId;
+      const obs = this.$store.getters.records.reduce((acc, item) => {
+        if (item.taxonId === id) return acc + 1;
         return acc;
       }, 0);
       return obs;
     },
     lastObs() {
-      const id = this.record.taxonId;
-      const obs = this.$store.getters.records.reduce((acc, record) => {
-        if (record.taxonId === id) acc.push(record);
+      const id = this.item.taxonId;
+      const obs = this.$store.getters.records.reduce((acc, item) => {
+        if (item.taxonId === id) acc.push(item);
         return acc;
       }, []);
       // console.log(obs);

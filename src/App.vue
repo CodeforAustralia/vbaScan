@@ -70,20 +70,27 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /*text-align: center;*/
   color: #2c3e50;
-  /*margin-top: 60px;*/
   overflow-x: hidden;
   position: relative;
   height: 100vh;
 }
 .main-toolbar {
-  /*position: relative;*/
-  /*z-index: 10;*/
   justify-content: space-between;
 }
-.md-theme-default.md-toolbar {
-background: linear-gradient(120deg, #201547 0%,#201547 74%,#00b2a9 70%,#00b2a9 80%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+:root .md-theme-default.md-toolbar {
+  background-color: #201647;
+/*background: linear-gradient(120deg, #201547 0%,#201547 74%,#00b2a9 70%,#00b2a9 80%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+.md-toolbar.main-toolbar.md-theme-default::before {
+  border-color: transparent transparent #00b7bd transparent;
+  border-style: solid;
+  border-width: 0 12.5rem 26.25rem 12.5rem;
+  content: '';
+  height: 100%;
+  position: absolute;
+  right: -19.625rem;
+  top: -22.25rem;
 }
 
 #logo{

@@ -1,41 +1,44 @@
 <template>
   <div>
     <listFilter></listFilter>
-    <md-list class="list" v-if="this.$store.state.listView && this.$store.getters.records.length">
-        <listItem v-for="(item, index) in items" :record="item" :key="index" 
-                  @click.native="selectSpecie(item.taxonId)"></listItem>
-    </md-list>
-    <md-layout v-else class="card-layout">
-      <gridListItem v-for="item in items" :record="item"></gridListItem>
-    </md-layout>
+    <component :is="currentComponent"></component>
+    <!-- <md-layout v-else class="card-layout">
+      <gridListItem v-for="item in items" 
+        :record="item"
+        @click.native="selectSpecie(item.taxonId)">
+      </gridListItem>
+    </md-layout> -->
     <p v-if="this.$store.getters.species.length > 10">{{this.$store.getters.species.length}} items available, Only showing first 10</p>
   </div>
 </template>
 
 <script>
-import listItem from './listItem';
+// import listItem from './listItem';
 import gridListItem from './gridListItem';
 import listFilter from './listFilter';
+import specieList from './specieList';
+import byDistanceList from './byDistanceList';
 
 export default {
   components: {
-    listItem,
+    // listItem,
     gridListItem,
     listFilter,
+    byDistanceList,
+    specieList,
   },
   computed: {
-    items() {
+    currentComponent() {
+      // Render component when records are available
+      if (!this.$store.getters.records.length) return null;
+      // Render the grid view
+      if (!this.$store.state.listView) return 'gridListItem';
+      // Render component based on filter selection
       switch (this.$store.state.filter) {
         case 'distance':
-          return this.byDistance().slice(0, 10);
-        case 'commonName':
-          console.log('filter by commonName');
-          return this.byCommonName().slice(0, 9);
-        case 'scientificName':
-          console.log('filter by scientificName');
-          return this.byScientificName().slice(0, 11);
+          return 'byDistanceList';
         default:
-          return this.byScientificName().slice(0, 11);
+          return 'specieList';
       }
     },
   },
@@ -43,6 +46,22 @@ export default {
     selectSpecie(taxonId) {
       console.log(taxonId);
       this.$store.dispatch('setSpecieDetail', taxonId);
+    },
+
+    distanceGroup() {
+      const speciesDistance = this.byDistance()
+        .map(specie => specie.closestRecordDistance);
+      const min = speciesDistance[0] * 1000;
+      const max = speciesDistance[speciesDistance.length - 1] * 1000;
+      const group = 5;
+      const groupSize = Math.round((max - min) / group);
+
+      const groupBoundaries = [];
+
+      for (let i = min; i <= max; i += i + groupSize) {
+        groupBoundaries.push(Math.round(i));
+      }
+      return groupBoundaries;
     },
 
     byDistance() {
@@ -54,33 +73,7 @@ export default {
         return Object.assign({}, specie, { closestRecordDistance: closestRecord.distance });
       });
       return speciesWithClosestRecord
-        .sort((a, b) => b.closestRecordDistance - a.closestRecordDistance);
-    },
-
-    byScientificName() {
-      const species = this.$store.getters.species;
-      const filteredSpecies = species.sort((a, b) => {
-        const nameA = a.scientificDisplayNme.toLowerCase();
-        const nameB = b.scientificDisplayNme.toLowerCase();
-
-        if (nameA < nameB) return -1; // sort string ascending
-        if (nameA > nameB) return 1;
-        return 0; // default return value (no sorting)
-      });
-      return filteredSpecies || [];
-    },
-
-    byCommonName() {
-      const species = this.$store.getters.species;
-      const filteredSpecies = species.sort((a, b) => {
-        const nameA = a.commonNme.toLowerCase();
-        const nameB = b.commonNme.toLowerCase();
-
-        if (nameA < nameB) return -1; // sort string ascending
-        if (nameA > nameB) return 1;
-        return 0; // default return value (no sorting)
-      });
-      return filteredSpecies || [];
+        .sort((a, b) => a.closestRecordDistance - b.closestRecordDistance);
     },
   },
 
