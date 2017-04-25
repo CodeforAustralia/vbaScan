@@ -1,5 +1,6 @@
 <template>
-  <md-list-item class="md-list-item">
+  <md-list-item class="md-list-item"
+    @click.native="selectSpecie">
     <md-avatar>
       <img :src="thumbnail" v-if="thumbnail">
       <img src="https://raw.githubusercontent.com/Ranks/emojione/2.2.7/assets/png_128x128/1f43e.png" alt="emoji" class="emoji" v-else>
@@ -9,10 +10,10 @@
     <div>
       <div class="taxonomy">
         <div class="top-row">
-          <p>{{item.commonNme}}</p>
-          <p v-if="item.conservationStatus" class="status">{{item.conservationStatus}}</p>
+          <p>{{commonName}}</p>
+          <p v-if="conservationStatus" class="status">{{conservationStatus}}</p>
         </div>
-        <p>{{item.scientificDisplayNme}}</p>
+        <p>{{scientificName}}</p>
       </div>
     </div>
       <div class="observation">
@@ -26,41 +27,53 @@
 
 <script>
 export default {
-  props: ['item'],
+  props: {
+    commonName: {
+      type: String,
+      default() { return ''; },
+    },
+    conservationStatus: {
+      type: String,
+      default() { return false; },
+    },
+    scientificName: {
+      type: String,
+      default() { return ''; },
+    },
+    taxonId: {
+      type: Number,
+      default() { return undefined; },
+    },
+  },
   methods: {
-    toggleRightSidenav() {
-      const taxonId = parseInt(event.currentTarget.id, 10);
-      this.$emit('infoPanel', taxonId);
+    selectSpecie() {
+      const taxonId = this.taxonId;
+      this.$store.dispatch('setSpecieDetail', taxonId);
     },
   },
   computed: {
     thumbnail() {
-      const media = this.$store.getters.specieMedia(this.item.taxonId);
+      const media = this.$store.getters.specieMedia(this.taxonId);
       if (!media) return false;
-      // console.log(this.item.commonNme, media, media.length);
       if (Object.prototype.hasOwnProperty.call(media[0], 'small')) return media[0].small.uri;
       if (Object.prototype.hasOwnProperty.call(media[0], 'thumbnail')) return media[0].thumbnail.uri;
       return false;
     },
     obs() {
-      const id = this.item.taxonId;
-      const obs = this.$store.getters.records.reduce((acc, item) => {
-        if (item.taxonId === id) return acc + 1;
+      const id = this.taxonId;
+      const obs = this.$store.getters.records.reduce((acc, record) => {
+        if (record.taxonId === id) return acc + 1;
         return acc;
       }, 0);
       return obs;
     },
     lastObs() {
-      const id = this.item.taxonId;
-      const obs = this.$store.getters.records.reduce((acc, item) => {
-        if (item.taxonId === id) acc.push(item);
+      const id = this.taxonId;
+      const obs = this.$store.getters.records.reduce((acc, record) => {
+        if (record.taxonId === id) acc.push(record);
         return acc;
       }, []);
-      // console.log(obs);
-      const sorted = obs.sort((a, b) => {
-        return b.surveyStartSdt - a.surveyStartSdt;
-      });
-      // console.log('sorted', sorted);
+      const sorted = obs.sort((a, b) => b.surveyStartSdt - a.surveyStartSdt);
       return new Date(sorted[0].surveyStartSdt).getFullYear();
     },
   },

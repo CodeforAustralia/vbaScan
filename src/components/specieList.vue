@@ -1,18 +1,21 @@
 <template>
   <md-list class="list">
-    <listItem v-for="(item, index) in items"
-      :item="item" 
+    <specieListItem v-for="(specie, index) in items"
+      :commonName="specie.commonNme"
+      :conservationStatus="specie.conservationStatus"
+      :scientificName="specie.scientificDisplayNme"
+      :taxonId="specie.taxonId" 
       :key="index" 
       @click.native="selectSpecie(item.taxonId)">
-    </listItem>
+    </specieListItem>
   </md-list>
 </template>
 <script>
-import listItem from './listItem';
+import specieListItem from './specieListItem';
 
 export default {
   components: {
-    listItem,
+    specieListItem,
   },
   computed: {
     items() {
@@ -55,6 +58,11 @@ export default {
   },
 };
 </script>
+
 <style scoped>
-  
+
+.list{
+  padding-top: 0;
+  padding-bottom: 0;
+}
 </style>

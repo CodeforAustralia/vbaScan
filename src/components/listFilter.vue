@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import listItem from './listItem';
+// import listItem from './listItem';
 
 export default {
   data() {
@@ -32,7 +32,7 @@ export default {
     return data;
   },
   components: {
-    listItem,
+    // listItem,
   },
   computed: {
     itemType() {

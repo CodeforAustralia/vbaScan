@@ -13,7 +13,6 @@
 </template>
 
 <script>
-// import listItem from './listItem';
 import gridListItem from './gridListItem';
 import listFilter from './listFilter';
 import specieList from './specieList';
@@ -21,7 +20,6 @@ import byDistanceList from './byDistanceList';
 
 export default {
   components: {
-    // listItem,
     gridListItem,
     listFilter,
     byDistanceList,
@@ -47,44 +45,12 @@ export default {
       console.log(taxonId);
       this.$store.dispatch('setSpecieDetail', taxonId);
     },
-
-    distanceGroup() {
-      const speciesDistance = this.byDistance()
-        .map(specie => specie.closestRecordDistance);
-      const min = speciesDistance[0] * 1000;
-      const max = speciesDistance[speciesDistance.length - 1] * 1000;
-      const group = 5;
-      const groupSize = Math.round((max - min) / group);
-
-      const groupBoundaries = [];
-
-      for (let i = min; i <= max; i += i + groupSize) {
-        groupBoundaries.push(Math.round(i));
-      }
-      return groupBoundaries;
-    },
-
-    byDistance() {
-      const species = this.$store.getters.species;
-      const speciesWithClosestRecord = species.map((specie) => {
-        const taxonId = specie.taxonId;
-        const records = this.$store.getters.records.filter(record => record.taxonId === taxonId);
-        const closestRecord = records.sort((a, b) => a.distance - b.distance)[0];
-        return Object.assign({}, specie, { closestRecordDistance: closestRecord.distance });
-      });
-      return speciesWithClosestRecord
-        .sort((a, b) => a.closestRecordDistance - b.closestRecordDistance);
-    },
   },
 
 };
 </script>
 
 <style scoped>
-.list{
-  padding-top: 0;
-  padding-bottom: 0;
-}
 .card-layout {
   margin-right: 4px;
 }

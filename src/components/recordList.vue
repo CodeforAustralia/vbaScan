@@ -36,11 +36,11 @@
   </div>
 </template>
 <script>
-import listItem from './listItem';
+// import specieListItem from './specieListItem';
 
 export default {
   components: {
-    listItem,
+    // specieListItem,
   },
   computed: {
     records() {
