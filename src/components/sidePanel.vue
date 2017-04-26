@@ -2,7 +2,7 @@
   <md-sidenav class="md-right md-fixed" ref="rightSidenav">
     <md-toolbar>
       <div class="md-toolbar-container">
-        <h3 class="md-title">Debugging</h3>
+        <h3 class="md-title">Settings</h3>
       </div>
     </md-toolbar>
 
@@ -10,8 +10,7 @@
     </br>
 
     <label for="weight">Search radius : {{searchRadius}} m</label>
-    <!-- <input type="range" id="weight" min="10" value="10" max="2000" step="100"> -->
-    <!-- <input type="range"> -->
+    <input type="range" id="weight" min="50" v-model="searchRadius" max="2000" step="50">
     <p>Location : </p>
     <p>Latitude : {{position.lat}}</p>
     <p>Longitude : {{position.long}}</p>
@@ -24,9 +23,18 @@
 <script>
 export default {
   name: 'sidePanel',
+  data() {
+    const data = { // eslint-disable-line no-unused-vars
+      radius: 251,
+    };
+    return data;
+  },
   computed: {
-    searchRadius() {
-      return this.$store.state.searchRadius;
+    searchRadius: {
+      get() { return this.$store.state.searchRadius; },
+      set(value) {
+        this.$store.commit('SET_RADIUS', value);
+      },
     },
     position() {
       return {

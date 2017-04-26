@@ -9,17 +9,17 @@ Vue.use(Vuex);
 const state = {
   records: [],
   speciesData: {},
-  selectedSpecie: null,
-  token: null,
+  selectedSpecie: undefined,
+  token: undefined,
   position: {
-    acc: false,
-    lat: false,
-    long: false,
+    acc: undefined,
+    lat: undefined,
+    long: undefined,
   },
   listView: true,
   filter: 'scientificName',
   progress: false,
-  searchRadius: 250,
+  searchRadius: 500,
 };
 
 export default new Vuex.Store({

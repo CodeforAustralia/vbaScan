@@ -17,6 +17,10 @@ export const SET_POSITION = (state, position) => {
   Vue.set(state, 'position', position);
 };
 
+export const SET_RADIUS = (state, value) => {
+  Vue.set(state, 'searchRadius', value);
+};
+
 export const SWITCH_VIEW = state => Vue.set(state, 'listView', !state.listView);
 
 export const UPDATE_FILTER = (state, filter) => {
@@ -31,7 +35,6 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data, vbaData }) => {
   const isMuseumData = Object.prototype.hasOwnProperty.call(data, 'taxonomy');
   if (isMuseumData) {
     // reduce the data object to a subset
-    // console.log(isMuseumData);
     const subset = [
       'hazards',
       'animalType',
@@ -65,7 +68,6 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data, vbaData }) => {
     );
     return Vue.set(state.speciesData, taxonId, subset);
   }
-  // console.log(data);
   const specieTemplate = {
     taxonomy: {
       family: getValue(data.family),
