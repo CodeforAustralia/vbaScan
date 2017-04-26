@@ -28,7 +28,7 @@ export const fetchRecordsByLocation = ({ commit, state }) => {
   const position = {
     lat: state.position.lat,
     long: state.position.long,
-    rad: 500,
+    rad: state.searchRadius,
   };
 
   return recordsByPosition(position, token)

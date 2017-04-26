@@ -1,46 +1,24 @@
-<!-- date , methods, count , name, project Id, accuracy -->
 <template>
   <div>
     <md-list class="list">
-      <md-whiteframe v-for="record in records" :record="record">
-      <div class="row">
-          <p>Observer :</p>
-          <p>{{record.observerFullName}}</p>
-      </div>
-      <div class="row">
-        <p>Method :</p>
-        <p>{{ record.samplingMethodCde}}</p>
-      </div>
-      <div class="row">
-        <p>Date :</p>
-        <p>{{new Date(record.surveyStartSdt).toDateString()}}</p>
-      </div>
-      <div v-if="record.totalCountInt" class="row">
-        <p>Count :</p>
-        <p>{{record.totalCountInt}}</p>
-      </div>
-      <div class="row">
-        <p>Accuracy :</p>
-        <p>{{record.latLongAccuracyddNum}} m</p>
-      </div>
-      <div class="row">
-        <p>Project Id :</p>
-        <p>{{record.projectId}}</p>
-      </div>
-      <div class="row">
-        <p>Distance :</p>
-        <p>{{(record.distance * 1000).toFixed()}} m</p>
-      </div>
-      </md-whiteframe>
+      <recordListItem v-for="record in records"
+        :observerName="record.observerFullName"
+        :method="record.samplingMethodCde"
+        :startDate="record.surveyStartSdt"
+        :count="record.totalCountInt"
+        :accuracy="record.latLongAccuracyddNum"
+        :projectId="record.projectId"
+        :distance="record.distance">
+      </recordListItem>
     </md-list>
   </div>
 </template>
 <script>
-// import specieListItem from './specieListItem';
+import recordListItem from './recordListItem';
 
 export default {
   components: {
-    // specieListItem,
+    recordListItem,
   },
   computed: {
     records() {

@@ -19,32 +19,19 @@
     <md-progress v-if="this.$store.state.progress" class="md-accent" md-indeterminate></md-progress>
     <hello></hello>
     <!-- sideNav -->
-    <md-sidenav class="md-right md-fixed" ref="rightSidenav">
-      <md-toolbar>
-        <div class="md-toolbar-container">
-          <h3 class="md-title">Debugging</h3>
-        </div>
-      </md-toolbar>
-
-      </br>
-      </br>
-
-      <label for="weight">Range : 250 m</label>
-      <!-- <input type="range" id="weight" min="10" value="10" max="2000" step="100"> -->
-      <!-- <input type="range"> -->
-      </br>
-      <md-button class="md-raised md-accent" @click.native="closeRightSidenav">Close</md-button>
-    </md-sidenav>
+    <sidePanel ref="rightSidenav"></sidePanel>
   </div>
 </template>
 
 <script>
 import Hello from './components/Hello';
+import sidePanel from './components/sidePanel';
 
 export default {
   name: 'app',
   components: {
     Hello,
+    sidePanel,
   },
   computed: {
     listView() {
@@ -56,7 +43,7 @@ export default {
       this.$store.dispatch('switchView');
     },
     toggleRightSidenav() {
-      this.$refs.rightSidenav.toggle();
+      this.$refs.rightSidenav.toggleRightSidenav();
     },
     closeRightSidenav() {
       this.$refs.rightSidenav.close();
@@ -75,13 +62,15 @@ export default {
   position: relative;
   height: 100vh;
 }
+
 .main-toolbar {
   justify-content: space-between;
 }
+
 :root .md-theme-default.md-toolbar {
   background-color: #201647;
-/*background: linear-gradient(120deg, #201547 0%,#201547 74%,#00b2a9 70%,#00b2a9 80%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
+
 .md-toolbar.main-toolbar.md-theme-default::before {
   border-color: transparent transparent #00b7bd transparent;
   border-style: solid;
@@ -101,15 +90,12 @@ export default {
   justify-content: flex-end;
   align-items: center;
 }
+
 .md-button{
   min-width: 0;
 }
+
 #menu-icon {
   color: #201547;
-}
-
-.md-sidenav {
-  z-index: 10;
-  position: fixed !important;
 }
 </style>

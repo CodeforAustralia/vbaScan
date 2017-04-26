@@ -1,14 +1,14 @@
 <template>
   <md-list class="list">
-  <template v-for="(range, index) in ranges">
-    <p class="distance-label">At least {{range}}m away</p>
-    <specieListItem v-for="specie in speciesInRange(range, ranges[index + 1])"
-      :commonName="specie.commonNme"
-      :conservationStatus="specie.conservationStatus"
-      :scientificName="specie.scientificDisplayNme"
-      :taxonId="specie.taxonId">
-    </specieListItem>
-  </template>
+    <template v-for="(range, index) in ranges">
+      <p class="distance-label">At least {{range}}m away</p>
+      <specieListItem v-for="specie in speciesInRange(range, ranges[index + 1])"
+        :commonName="specie.commonNme"
+        :conservationStatus="specie.conservationStatus"
+        :scientificName="specie.scientificDisplayNme"
+        :taxonId="specie.taxonId">
+      </specieListItem>
+    </template>
   </md-list>
 </template>
 
@@ -21,8 +21,6 @@ export default {
   },
   computed: {
     ranges() {
-      // const speciesDistance = this.byDistance()
-      //   .map(specie => specie.closestRecordDistance);
       const speciesDistance = this.byDistance()
         .reduce((accu, specie) => {
           // convert from Km to m and round value;
@@ -40,6 +38,11 @@ export default {
       const steps = Math.round(max - min) / 5;
       const ranges = [];
 
+      // break if not enough distance value available to build range.
+      if (steps <= 0) {
+        const step = min + (0 - (min % 10));
+        return [step];
+      }
       // build ranges value
       for (let i = min; i <= max; i += steps) {
         // round to lower multiple of 10. eg: 2348 -> 2340

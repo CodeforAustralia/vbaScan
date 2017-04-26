@@ -1,6 +1,6 @@
 <template>
   <md-list-item class="md-list-item"
-    @click.native="selectSpecie">
+  @click.native="selectSpecie(taxonId)">
     <md-avatar>
       <img :src="thumbnail" v-if="thumbnail">
       <img src="https://raw.githubusercontent.com/Ranks/emojione/2.2.7/assets/png_128x128/1f43e.png" alt="emoji" class="emoji" v-else>
@@ -133,5 +133,9 @@ export default {
 
 p {
   margin: 0;
+}
+/* Fix ghosting on hover bug */
+.md-button:hover:not([disabled]):not(.md-raised) {
+  background-color: transparent;
 }
 </style>

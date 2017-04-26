@@ -11,10 +11,15 @@ const state = {
   speciesData: {},
   selectedSpecie: null,
   token: null,
-  position: null,
+  position: {
+    acc: false,
+    lat: false,
+    long: false,
+  },
   listView: true,
   filter: 'scientificName',
   progress: false,
+  searchRadius: 250,
 };
 
 export default new Vuex.Store({

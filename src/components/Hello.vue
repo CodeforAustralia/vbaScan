@@ -4,29 +4,19 @@
       <h1>Welcome to Bio scan</h1>
       <p>Explore the recorded species nearby.
       You can set the size of the search area and download the results.
-      Records are provided by the <a href="https://vba.dse.vic.gov.au/vba/">Victorian Biodiversity Atlas</a></p>
+      Records are provided by the <a href="https://vba.dse.vic.gov.au/vba/">Victorian Biodiversity Atlas</a>
+      </p>
       <md-layout md-align="center">
-        <md-button  :disabled="false" v-if="this.$store.state.token" @click.native="browse" id="browse-button" class="md-raised">
+        <md-button :disabled="!this.$store.state.token" @click.native="browse" id="browse-button" class="md-raised">
           <md-icon>place</md-icon>  
           Browse
         </md-button>
       </md-layout>
     </div>
 
-    <!-- <recordTable v-show="this.$store.state.records.length"></recordTable> -->
-    <!-- <specieDetail v-if="selectedSpecie" :specie="selectedSpecie"></specieDetail> -->
     <transition name="component-fade" mode="out-in" >
       <component :is="currentComponent"></component>
     </transition>
-    <!-- <button style="background-color:red" @click="fetchToken" >Get Token</button> -->
-    <!-- <button style="background-color:green" @click="fetchRecords" >Get Records</button> -->
-    <!-- <button style="background-color:orange" @click="getPosition" >Get Position</button> -->
-    <!-- </br> -->
-    <!-- <span>filter : {{ this.$store.state.filter }}</span></br> -->
-    <!-- <span>position : {{ position }}</span></br> -->
-    <!-- <span>token : {{ token }}</span></br> -->
-    <!-- <span>records : {{ records }}</span></br> -->
-    <!-- <span>species : {{ species }}</span></br> -->
   </div>
 </template>
 
@@ -36,13 +26,6 @@ import specieDetail from './specieDetail';
 
 export default {
   name: 'hello',
-  // data() {
-  //   const data = { // eslint-disable-line no-unused-vars
-  //     currentComponent: null,
-  //   };
-  //   return data;
-  // },
-
   components: {
     recordTable,
     specieDetail,

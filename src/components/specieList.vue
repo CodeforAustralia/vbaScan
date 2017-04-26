@@ -5,8 +5,7 @@
       :conservationStatus="specie.conservationStatus"
       :scientificName="specie.scientificDisplayNme"
       :taxonId="specie.taxonId" 
-      :key="index" 
-      @click.native="selectSpecie(item.taxonId)">
+      :key="index">
     </specieListItem>
   </md-list>
 </template>
@@ -54,6 +53,10 @@ export default {
         return 0; // default return value (no sorting)
       });
       return filteredSpecies || [];
+    },
+    selectSpecie() {
+      const taxonId = this.taxonId;
+      this.$store.dispatch('setSpecieDetail', taxonId);
     },
   },
 };
