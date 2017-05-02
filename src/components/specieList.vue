@@ -7,12 +7,25 @@
       :taxonId="specie.taxonId" 
       :key="index">
     </specieListItem>
+    <ul class="pagination">
+      <li v-for="pageNumber in totalPages" v-if="Math.abs(pageNumber - currentPage) < 2 || pageNumber == totalPages || pageNumber == 1">
+        <md-button href="#" @click.native="setPage(pageNumber)"  :class="{current: currentPage === pageNumber, last: (pageNumber == totalPages && Math.abs(pageNumber - currentPage) > 2), first:(pageNumber == 1 && Math.abs(pageNumber - currentPage) > 2)}">{{ pageNumber }}</md-button>
+      </li>
+    </ul>
   </md-list>
 </template>
 <script>
 import specieListItem from './specieListItem';
 
 export default {
+  data() {
+    const data = { // eslint-disable-line no-unused-vars
+      currentPage: 0,
+      itemsPerPage: 10,
+      resultCount: 0,
+    };
+    return data;
+  },
   components: {
     specieListItem,
   },
@@ -20,15 +33,30 @@ export default {
     items() {
       switch (this.$store.state.filter) {
         case 'commonName':
-          return this.byCommonName().slice(0, 10);
+          return this.paginate(this.byCommonName());
         case 'scientificName':
-          return this.byScientificName().slice(0, 10);
+          return this.paginate(this.byScientificName());
         default:
-          return this.byScientificName().slice(0, 10);
+          return this.paginate(this.byScientificName());
       }
+    },
+    totalPages() {
+      return Math.ceil(this.resultCount / this.itemsPerPage);
     },
   },
   methods: {
+    paginate(list) {
+      this.resultCount = list.length;
+      if (this.currentPage >= this.totalPages) {
+        this.currentPage = this.totalPages - 1;
+      }
+      const index = this.currentPage * this.itemsPerPage;
+      return list.slice(index, index + this.itemsPerPage);
+    },
+    setPage(pageNumber) {
+      this.currentPage = pageNumber;
+      console.log(this.data);
+    },
     byScientificName() {
       const species = this.$store.getters.species;
       const filteredSpecies = species.sort((a, b) => {
@@ -67,5 +95,30 @@ export default {
 .list{
   padding-top: 0;
   padding-bottom: 0;
+}
+
+a {
+  color: #999;
+}
+.current {
+  color: red;
+}
+ul .pagination {
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+}
+.pagination li {
+  display: inline;
+  margin: 5px 5px;
+}
+
+a.first::after {
+  content:'...'
+}
+
+a.last::before {
+  content:'...'
 }
 </style>

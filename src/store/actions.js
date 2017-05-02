@@ -15,6 +15,10 @@ function filterDuplicateSpecies(records) {
   return species;
 }
 
+export const clearRecords = ({ commit }) => {
+  commit('CLEAR_RECORDS');
+};
+
 export const fetchToken = ({ commit }) => {
   guestLogin()
     .then((token) => {

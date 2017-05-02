@@ -21,6 +21,10 @@ export const SET_RADIUS = (state, value) => {
   Vue.set(state, 'searchRadius', value);
 };
 
+export const CLEAR_RECORDS = (state) => {
+  Vue.set(state, 'records', []);
+};
+
 export const SWITCH_VIEW = state => Vue.set(state, 'listView', !state.listView);
 
 export const UPDATE_FILTER = (state, filter) => {

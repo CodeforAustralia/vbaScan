@@ -8,9 +8,10 @@
 
     </br>
     </br>
-
-    <label for="weight">Search radius : {{searchRadius}} m</label>
-    <input type="range" id="weight" min="50" v-model="searchRadius" max="2000" step="50">
+    <form action="">
+      <label for="weight">Search radius : {{searchRadius}} m</label>
+      <input type="range" id="weight" min="50" v-model="searchRadius" max="1500" step="50">  
+    </form>
     <p>Location : </p>
     <p>Latitude : {{position.lat}}</p>
     <p>Longitude : {{position.long}}</p>

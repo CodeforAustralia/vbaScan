@@ -4,11 +4,15 @@
       <md-toolbar class="main-toolbar">
         <img id="logo" src="https://www.wildlife.vic.gov.au/__data/assets/git_bridge/0015/177/deploy/mysource_files/logo-copy.svg" alt="DELWP logo">
         <md-layout class="toolbar-icons">
+          <md-button v-if="this.$store.state.records.length && this.$store.state.token"
+            @click.native="refresh()">
+            <md-icon>refresh</md-icon>
+          </md-button>
           <md-button v-if="this.$store.state.records.length" class="md-icon-button" @click.native="switchView()">
-          <div v-if="!this.$store.state.selectedSpecie">
-            <md-icon v-if="listView">view_module</md-icon>
-            <md-icon v-else>view_list</md-icon>
-          </div>
+            <div v-if="!this.$store.state.selectedSpecie">
+              <md-icon v-if="listView">view_module</md-icon>
+              <md-icon v-else>view_list</md-icon>
+            </div>
           </md-button>
           <md-button @click.native="toggleRightSidenav">
             <md-icon id="menu-icon" >menu</md-icon>
@@ -42,11 +46,14 @@ export default {
     switchView() {
       this.$store.dispatch('switchView');
     },
+    refresh() {
+      this.$store.dispatch('clearRecords');
+      this.$store.dispatch('switchProgress');
+      this.$store.dispatch('fetchRecordsByLocation')
+        .then(() => this.$store.dispatch('switchProgress'));
+    },
     toggleRightSidenav() {
       this.$refs.rightSidenav.toggleRightSidenav();
-    },
-    closeRightSidenav() {
-      this.$refs.rightSidenav.close();
     },
   },
 };

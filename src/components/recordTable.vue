@@ -2,13 +2,7 @@
   <div>
     <listFilter></listFilter>
     <component :is="currentComponent"></component>
-    <!-- <md-layout v-else class="card-layout">
-      <gridListItem v-for="item in items" 
-        :record="item"
-        @click.native="selectSpecie(item.taxonId)">
-      </gridListItem>
-    </md-layout> -->
-    <p v-if="this.$store.getters.species.length > 10">{{this.$store.getters.species.length}} items available, Only showing first 10</p>
+    <p v-if="this.$store.getters.species.length > 10">{{this.$store.getters.species.length}} specie found, showing 10 per page.</p>
   </div>
 </template>
 

@@ -68,26 +68,6 @@ export default {
     },
   },
   methods: {
-    speciesByRange(range) {
-      return [`species at ${range}`];
-    },
-
-    distanceGroup() {
-      const speciesDistance = this.byDistance()
-        .map(specie => specie.closestRecordDistance);
-      const min = speciesDistance[0] * 1000;
-      const max = speciesDistance[speciesDistance.length - 1] * 1000;
-      const group = 5;
-      const groupSize = Math.round((max - min) / group);
-
-      const groupBoundaries = [];
-
-      for (let i = min; i <= max; i += i + groupSize) {
-        groupBoundaries.push(Math.round(i + (50 - (i % 50))));
-      }
-      return groupBoundaries;
-    },
-
     byDistance() {
       const species = this.$store.getters.species;
       const speciesWithClosestRecord = species.map((specie) => {

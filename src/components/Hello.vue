@@ -77,7 +77,6 @@ export default {
       this.$store.dispatch('switchProgress');
       this.$store.dispatch('getPosition')
         .then(() => this.$store.dispatch('fetchRecordsByLocation'))
-        // .then(() => this.$store.dispatch('hydrateSpecies'))
         .then(() => this.$store.dispatch('switchProgress'));
     },
   },
