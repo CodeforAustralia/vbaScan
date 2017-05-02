@@ -1,33 +1,47 @@
 <template>
-  <md-list class="list">
-    <specieListItem v-for="(specie, index) in items"
-      :commonName="specie.commonNme"
-      :conservationStatus="specie.conservationStatus"
-      :scientificName="specie.scientificDisplayNme"
-      :taxonId="specie.taxonId" 
-      :key="index">
-    </specieListItem>
+  <div>
+    <md-list class="list" v-if="this.$store.state.listView">
+    <template v-for="(specie, index) in items">      
+      <specieListItem
+        :commonName="specie.commonNme"
+        :conservationStatus="specie.conservationStatus"
+        :scientificName="specie.scientificDisplayNme"
+        :taxonId="specie.taxonId" 
+        :key="index">
+      </specieListItem>
+    </template>
+    </md-list>
+    <div class="gridview" v-else>
+      <gridListItem v-for="(specie, index) in items"
+        :commonName="specie.commonNme"
+        :scientificName="specie.scientificDisplayNme"
+        :taxonId="specie.taxonId">
+      </gridListItem>
+    </div>
     <ul class="pagination">
       <li v-for="pageNumber in totalPages" v-if="Math.abs(pageNumber - currentPage) < 2 || pageNumber == totalPages || pageNumber == 1">
         <md-button href="#" @click.native="setPage(pageNumber)"  :class="{current: currentPage === pageNumber, last: (pageNumber == totalPages && Math.abs(pageNumber - currentPage) > 2), first:(pageNumber == 1 && Math.abs(pageNumber - currentPage) > 2)}">{{ pageNumber }}</md-button>
       </li>
-    </ul>
-  </md-list>
+      </ul>
+  </div>
 </template>
 <script>
 import specieListItem from './specieListItem';
+import gridListItem from './gridListItem';
 
 export default {
   data() {
     const data = { // eslint-disable-line no-unused-vars
-      currentPage: 0,
-      itemsPerPage: 10,
+      currentPage: 1,
+      itemsPerPage: 8,
       resultCount: 0,
+      rangeDisplayed: [],
     };
     return data;
   },
   components: {
     specieListItem,
+    gridListItem,
   },
   computed: {
     items() {
@@ -36,12 +50,55 @@ export default {
           return this.paginate(this.byCommonName());
         case 'scientificName':
           return this.paginate(this.byScientificName());
+        case 'distance':
+          return this.paginate(this.byDistance());
         default:
           return this.paginate(this.byScientificName());
       }
     },
     totalPages() {
       return Math.ceil(this.resultCount / this.itemsPerPage);
+    },
+    ranges() {
+      const speciesDistance = this.byDistance()
+        .reduce((accu, specie) => {
+          // convert from Km to m and round value;
+          const distance = Math.round(specie.closestRecordDistance * 1000);
+          // check if value already in array;
+          if (!accu.some(arrVal => distance === arrVal)) {
+            return [...accu, distance];
+          }
+          return accu;
+        }, []);
+      const min = speciesDistance[0];
+      const max = speciesDistance[speciesDistance.length - 1];
+      const steps = Math.round(max - min) / 5;
+      const ranges = [];
+
+      // break if not enough distance value available to build range.
+      if (steps <= 0) {
+        const step = min + (0 - (min % 10));
+        return [step];
+      }
+      // build ranges value
+      for (let i = min; i <= max; i += steps) {
+        // round to lower multiple of 10. eg: 2348 -> 2340
+        const roundedDown = i + (0 - (i % 10));
+        ranges.push(roundedDown);
+      }
+      // Check if species present in ranges
+      const validRanges = ranges.filter((range, index, array) => {
+        const maxRange = array[index + 1];
+        // check if the a record is present between range and range + 1
+        const inRange = speciesDistance.some(dist => dist >= range && dist < maxRange);
+        return inRange;
+      });
+      console.log(
+        `validRanges : ${validRanges}
+        min distance : ${min}
+        max distance : ${max}
+        steps : ${steps}`);
+      return validRanges;
     },
   },
   methods: {
@@ -54,8 +111,8 @@ export default {
       return list.slice(index, index + this.itemsPerPage);
     },
     setPage(pageNumber) {
+      this.rangeDisplayed = [];
       this.currentPage = pageNumber;
-      console.log(this.data);
     },
     byScientificName() {
       const species = this.$store.getters.species;
@@ -69,7 +126,6 @@ export default {
       });
       return filteredSpecies || [];
     },
-
     byCommonName() {
       const species = this.$store.getters.species;
       const filteredSpecies = species.sort((a, b) => {
@@ -85,6 +141,27 @@ export default {
     selectSpecie() {
       const taxonId = this.taxonId;
       this.$store.dispatch('setSpecieDetail', taxonId);
+    },
+    byDistance() {
+      const species = this.$store.getters.species;
+      const speciesWithClosestRecord = species.map((specie) => {
+        const taxonId = specie.taxonId;
+        const records = this.$store.getters.records.filter(record => record.taxonId === taxonId);
+        const closestRecord = records.sort((a, b) => a.distance - b.distance)[0];
+        return Object.assign({}, specie, { closestRecordDistance: closestRecord.distance });
+      });
+      return speciesWithClosestRecord
+        .sort((a, b) => a.closestRecordDistance - b.closestRecordDistance);
+    },
+    speciesInRange(min, max) {
+      const inRange = this.byDistance()
+        .filter((specie) => {
+          const distance = Math.round(specie.closestRecordDistance * 1000);
+          if (max) return distance >= min && distance < max;
+          return distance >= min;
+        });
+      console.log(min, max, inRange);
+      return inRange;
     },
   },
 };
@@ -103,14 +180,14 @@ a {
 .current {
   color: red;
 }
-ul .pagination {
+
+.pagination {
   padding: 0;
   list-style-type: none;
   display: flex;
   justify-content: center;
 }
 .pagination li {
-  display: inline;
   margin: 5px 5px;
 }
 
@@ -120,5 +197,10 @@ a.first::after {
 
 a.last::before {
   content:'...'
+}
+
+.gridview {
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>

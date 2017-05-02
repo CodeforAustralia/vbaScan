@@ -1,26 +1,39 @@
 <template>
   <md-whiteframe md-elevation="1" class="card">
     <div class="card-content" :style="backgroundImage">
-      <p class="specie-name truncate">{{record.commonNme}}</p>
+      <p class="specie-name truncate">{{commonName}}</p>
     </div>
   </md-whiteframe>
 </template>
 
 <script>
 export default {
-  props: ['record'],
+  props: {
+    commonName: {
+      type: String,
+      default() { return this.scientificName || ''; },
+    },
+    scientificName: {
+      type: String,
+      default() { return ''; },
+    },
+    taxonId: {
+      type: Number,
+      default() { return undefined; },
+    },
+  },
   methods: {
   },
   computed: {
     thumbnail() {
-      const media = this.$store.getters.specieMedia(this.record.taxonId);
+      const media = this.$store.getters.specieMedia(this.taxonId);
       if (!media) return false;
       if (Object.prototype.hasOwnProperty.call(media[0], 'small')) return media[0].small.uri;
+      if (Object.prototype.hasOwnProperty.call(media[0], 'thumbnail')) return media[0].thumbnail.uri;
       return false;
     },
     backgroundImage() {
       const imageLink = this.thumbnail;
-
       if (imageLink) {
         const style = {
           background: `url(${imageLink}) center center no-repeat` +
@@ -31,7 +44,7 @@ export default {
         return style;
       }
       const defaultStyle = {
-        background: 'url(https://emojione.com/wp-content/uploads/assets/emojis/1f43e.svg)' +
+        background: 'url(https://raw.githubusercontent.com/Ranks/emojione/2.2.7/assets/png_128x128/1f43e.png)' +
                     'top center no-repeat',
       };
       return defaultStyle;

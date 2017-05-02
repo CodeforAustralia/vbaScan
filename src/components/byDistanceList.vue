@@ -31,8 +31,6 @@ export default {
           }
           return accu;
         }, []);
-
-
       const min = speciesDistance[0];
       const max = speciesDistance[speciesDistance.length - 1];
       const steps = Math.round(max - min) / 5;
@@ -63,9 +61,6 @@ export default {
         steps : ${steps}`);
       return validRanges;
     },
-    items() {
-      return this.byDistance();
-    },
   },
   methods: {
     byDistance() {
@@ -79,7 +74,6 @@ export default {
       return speciesWithClosestRecord
         .sort((a, b) => a.closestRecordDistance - b.closestRecordDistance);
     },
-
     speciesInRange(min, max) {
       const inRange = this.byDistance()
         .filter((specie) => {
