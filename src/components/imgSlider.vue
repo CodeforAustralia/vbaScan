@@ -1,10 +1,14 @@
 <template>
   <div class="images">
-    <md-button @click.native="previous" class="nav-button">
+    <md-button @click.native="previous"
+      :class="{hidden: (!this.selectedImg > 0)}"
+      class="nav-button">
       <md-icon>navigate_before</md-icon>
     </md-button>
     <img :src="currentImage">
-    <md-button @click.native="next" class="nav-button">
+    <md-button @click.native="next"
+      :class="{hidden: (this.selectedImg >= this.media.length - 1)}"
+      class="nav-button">
       <md-icon>navigate_next</md-icon>
     </md-button>
   </div>
@@ -13,7 +17,6 @@
 <script>
 
 export default {
-  // props: ['specie'],
   data() {
     const data = { // eslint-disable-line no-unused-vars
       specie: this.$store.getters.selectedSpecieData,
@@ -29,7 +32,11 @@ export default {
     },
     currentImage() {
       console.log(this.selectedImg, this.media[this.selectedImg]);
-      return this.media[this.selectedImg].small.uri;
+      const media = this.media[this.selectedImg];
+      const uri = Object.prototype.hasOwnProperty.call(media, 'small')
+      ? media.small.uri
+      : media.thumbnail.uri;
+      return uri;
     },
   },
   methods: {
@@ -63,8 +70,12 @@ export default {
 .nav-button {
   display: flex;
   max-width: 10vw;
-  color: white;
+  /*color: white;*/
   justify-content: center;
   background-color: rgba(128,128,128,.4);
+}
+
+.hidden {
+  visibility: hidden;
 }
 </style>

@@ -1,28 +1,29 @@
 <template>
   <div>
     <md-list class="list" v-if="this.$store.state.listView">
-    <template v-for="(specie, index) in items">      
+    <template v-for="specie in items">      
       <specieListItem
         :commonName="specie.commonNme"
         :conservationStatus="specie.conservationStatus"
         :scientificName="specie.scientificDisplayNme"
         :taxonId="specie.taxonId" 
-        :key="index">
+        :key="specie.scientificDisplayNme">
       </specieListItem>
     </template>
     </md-list>
     <div class="gridview" v-else>
-      <gridListItem v-for="(specie, index) in items"
+      <gridListItem v-for="specie in items"
         :commonName="specie.commonNme"
         :scientificName="specie.scientificDisplayNme"
-        :taxonId="specie.taxonId">
+        :taxonId="specie.taxonId"
+        :key="specie.scientificDisplayNme">
       </gridListItem>
     </div>
     <ul class="pagination">
       <li v-for="pageNumber in totalPages" v-if="Math.abs(pageNumber - currentPage) < 2 || pageNumber == totalPages || pageNumber == 1">
         <md-button href="#" @click.native="setPage(pageNumber)"  :class="{current: currentPage === pageNumber, last: (pageNumber == totalPages && Math.abs(pageNumber - currentPage) > 2), first:(pageNumber == 1 && Math.abs(pageNumber - currentPage) > 2)}">{{ pageNumber }}</md-button>
       </li>
-      </ul>
+    </ul>
   </div>
 </template>
 <script>

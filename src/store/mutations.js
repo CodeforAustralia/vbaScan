@@ -101,7 +101,19 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data, vbaData }) => {
         uri: data.thumbnailUrl ? data.thumbnailUrl.replace(/http:\/\//, 'https://') : null,
       },
     }];
+    return Vue.set(state.speciesData, taxonId, specieTemplate);
   }
+  specieTemplate.media = [];
+  data.forEach((herbariumData) => {
+    specieTemplate.media.push({
+      thumbnail: {
+        uri: herbariumData.accessPoints.data.find(d => d.variant === 'thumbnail').accessURI,
+      },
+      medium: {
+        uri: herbariumData.accessPoints.data.find(d => d.variant === 'preview').accessURI,
+      },
+    });
+  });
   return Vue.set(state.speciesData, taxonId, specieTemplate);
 };
 

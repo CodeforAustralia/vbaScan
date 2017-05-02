@@ -3,6 +3,7 @@
 import { guestLogin, recordsByPosition /* , vbaSpecieSearch */} from '../api/vba';
 import { searchMuseumSpecies } from '../api/museum';
 import { searchALASpecies } from '../api/atlasLivingAus';
+import { searchHerbariumSpecies } from '../api/herbarium';
 
 function filterDuplicateSpecies(records) {
   const species = records.reduce((acc, record) => {
@@ -54,24 +55,34 @@ export const fetchRecordsByLocation = ({ commit, state }) => {
                 vbaData: specie,
               });
             }
-            // If the Vic museum doesnt return data, lookup the ALA
-            return searchALASpecies(taxonomy)
-              .then((alaSpecie) => {
-                if (alaSpecie) {
+            return searchHerbariumSpecies(taxonomy)
+              .then((herbariumSpecies) => {
+                if (herbariumSpecies.length > 0) {
                   return commit('ADD_SPECIE_DATA', {
                     taxonId: specie.taxonId,
-                    data: alaSpecie,
+                    data: herbariumSpecies,
                     vbaData: specie,
                   });
                 }
-                return commit('ADD_SPECIE_DATA', {
-                  taxonId: specie.taxonId,
-                  data: {
-                    commonName: specie.commonNme,
-                    name: specie.scientificDisplayNme,
-                  },
-                  vbaData: specie,
-                });
+                // If the Vic museum doesnt return data, lookup the ALA
+                return searchALASpecies(taxonomy)
+                  .then((alaSpecie) => {
+                    if (alaSpecie) {
+                      return commit('ADD_SPECIE_DATA', {
+                        taxonId: specie.taxonId,
+                        data: alaSpecie,
+                        vbaData: specie,
+                      });
+                    }
+                    return commit('ADD_SPECIE_DATA', {
+                      taxonId: specie.taxonId,
+                      data: {
+                        commonName: specie.commonNme,
+                        name: specie.scientificDisplayNme,
+                      },
+                      vbaData: specie,
+                    });
+                  });
               });
           });
       });
