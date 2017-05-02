@@ -1,5 +1,6 @@
 <template>
-  <md-whiteframe md-elevation="1" class="card">
+  <md-whiteframe md-elevation="1" class="card"
+    @click.native="selectSpecie(taxonId)">
     <div class="card-content" :style="backgroundImage">
       <p class="specie-name truncate">{{commonName}}</p>
     </div>
@@ -23,6 +24,10 @@ export default {
     },
   },
   methods: {
+    selectSpecie() {
+      const taxonId = this.taxonId;
+      this.$store.dispatch('setSpecieDetail', taxonId);
+    },
   },
   computed: {
     thumbnail() {
