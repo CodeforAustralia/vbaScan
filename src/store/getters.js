@@ -2,6 +2,7 @@
 /* eslint-disable arrow-body-style */
 
 function convertConservation(status) {
+  if (!status) return null;
   const threatenedRegex = [
     /L/,
     /P\s*L/,

@@ -36,7 +36,6 @@ export default {
       currentPage: 1,
       itemsPerPage: 8,
       resultCount: 0,
-      rangeDisplayed: [],
     };
     return data;
   },
@@ -58,7 +57,7 @@ export default {
       }
     },
     totalPages() {
-      return Math.ceil(this.resultCount / this.itemsPerPage);
+      return Math.round(this.resultCount / this.itemsPerPage);
     },
     ranges() {
       const speciesDistance = this.byDistance()
@@ -106,13 +105,13 @@ export default {
     paginate(list) {
       this.resultCount = list.length;
       if (this.currentPage >= this.totalPages) {
-        this.currentPage = this.totalPages - 1;
+        this.currentPage = this.totalPages;
       }
       const index = this.currentPage * this.itemsPerPage;
       return list.slice(index, index + this.itemsPerPage);
     },
     setPage(pageNumber) {
-      this.rangeDisplayed = [];
+      console.log(pageNumber);
       this.currentPage = pageNumber;
     },
     byScientificName() {
