@@ -21,7 +21,7 @@
     </div>
     <ul class="pagination">
       <li v-for="pageNumber in totalPages" v-if="Math.abs(pageNumber - currentPage) < 2 || pageNumber == totalPages || pageNumber == 1">
-        <md-button href="#" @click.native="setPage(pageNumber)"  :class="{current: currentPage === pageNumber, last: (pageNumber == totalPages && Math.abs(pageNumber - currentPage) > 2), first:(pageNumber == 1 && Math.abs(pageNumber - currentPage) > 2)}">{{ pageNumber }}</md-button>
+        <md-button href="#" @click.native="setPage(pageNumber)"  :class="{current: currentPage === pageNumber -1, last: (pageNumber == totalPages && Math.abs(pageNumber - currentPage) > 2), first:(pageNumber == 1 && Math.abs(pageNumber - currentPage) > 2)}">{{ pageNumber }}</md-button>
       </li>
     </ul>
   </div>
@@ -33,7 +33,7 @@ import gridListItem from './gridListItem';
 export default {
   data() {
     const data = { // eslint-disable-line no-unused-vars
-      currentPage: 1,
+      currentPage: 0,
       itemsPerPage: 8,
       resultCount: 0,
     };
@@ -44,6 +44,9 @@ export default {
     gridListItem,
   },
   computed: {
+    species() {
+      return this.$store.getters.species;
+    },
     items() {
       switch (this.$store.state.filter) {
         case 'commonName':
@@ -57,7 +60,7 @@ export default {
       }
     },
     totalPages() {
-      return Math.round(this.resultCount / this.itemsPerPage);
+      return Math.ceil(this.resultCount / this.itemsPerPage);
     },
     ranges() {
       const speciesDistance = this.byDistance()
@@ -104,6 +107,9 @@ export default {
   methods: {
     paginate(list) {
       this.resultCount = list.length;
+      if (list.length <= this.itemsPerPage) {
+        return list;
+      }
       if (this.currentPage >= this.totalPages) {
         this.currentPage = this.totalPages;
       }
@@ -112,7 +118,7 @@ export default {
     },
     setPage(pageNumber) {
       console.log(pageNumber);
-      this.currentPage = pageNumber;
+      this.currentPage = pageNumber - 1;
     },
     byScientificName() {
       const species = this.$store.getters.species;
