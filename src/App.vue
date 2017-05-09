@@ -49,7 +49,7 @@ export default {
     refresh() {
       this.$store.dispatch('clearRecords');
       this.$store.dispatch('switchProgress');
-      this.$store.dispatch('fetchRecordsByLocation')
+      this.$store.dispatch('searchRecords')
         .then(() => this.$store.dispatch('switchProgress'));
     },
     toggleRightSidenav() {

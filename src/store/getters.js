@@ -122,6 +122,7 @@ export const species = (state) => {
     if (specieClone.countOfSightings === 0) return accu;
     return [...accu, specieClone];
   });
+  if (!Array.isArray(speciesList)) return [speciesList];
   return speciesList;
 };
 
