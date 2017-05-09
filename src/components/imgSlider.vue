@@ -1,16 +1,22 @@
 <template>
-  <div class="images">
-    <md-button @click.native="previous"
-      :class="{hidden: (!this.selectedImg > 0)}"
-      class="nav-button">
-      <md-icon>navigate_before</md-icon>
-    </md-button>
-    <img :src="currentImage">
-    <md-button @click.native="next"
-      :class="{hidden: (this.selectedImg >= this.media.length - 1)}"
-      class="nav-button">
-      <md-icon>navigate_next</md-icon>
-    </md-button>
+  <div>
+    <div class="images">
+      <md-button @click.native="previous"
+        :class="{hidden: (!this.selectedImg > 0)}"
+        class="nav-button">
+        <md-icon>navigate_before</md-icon>
+      </md-button>
+      <img :src="currentImage">
+      <md-button @click.native="next"
+        :class="{hidden: (this.selectedImg >= this.media.length - 1)}"
+        class="nav-button">
+        <md-icon>navigate_next</md-icon>
+      </md-button>
+    </div>
+    <div class="credit" v-if="credit.by">
+      <p>Author: {{credit.by}}</p>
+      <!-- <p>Licence: {{credit.licence}}</p> -->
+    </div>
   </div>
 </template>
 
@@ -38,6 +44,12 @@ export default {
       : media.thumbnail.uri;
       return uri;
     },
+    credit() {
+      const media = this.media[this.selectedImg];
+      return {
+        by: media.author || media.creators[0].replace('Photographer: ', ''),
+      };
+    },
   },
   methods: {
     next() {
@@ -57,7 +69,6 @@ export default {
   align-items: center;
   justify-content: space-between;
   height: 30vh;
-  /*overflow: auto*/
 }
 
 .images img {
@@ -70,12 +81,14 @@ export default {
 .nav-button {
   display: flex;
   max-width: 10vw;
-  /*color: white;*/
   justify-content: center;
   background-color: rgba(128,128,128,.4);
 }
 
 .hidden {
   visibility: hidden;
+}
+.credit {
+  margin-left: 1rem;
 }
 </style>

@@ -65,7 +65,8 @@ export default {
     },
 
     fetchRecords() {
-      this.$store.dispatch('fetchRecordsByLocation');
+      // this.$store.dispatch('searchRecords');
+      // this.$store.dispatch('fetchRecordsByLocation');
     },
 
     getPosition() {
@@ -76,7 +77,8 @@ export default {
       // Toggle Progress bar
       this.$store.dispatch('switchProgress');
       this.$store.dispatch('getPosition')
-        .then(() => this.$store.dispatch('fetchRecordsByLocation'))
+        .then(() => this.$store.dispatch('searchRecords'))
+        // .then(() => this.$store.dispatch('fetchRecordsByLocation'))
         .then(() => this.$store.dispatch('switchProgress'));
     },
   },

@@ -9,6 +9,10 @@ export const SET_TOKEN = (state, token) => {
   Vue.set(state, 'token', token);
 };
 
+export const SET_SPECIES = (state, species) => {
+  Vue.set(state, 'species', species);
+};
+
 export const SET_RECORDS = (state, records) => {
   Vue.set(state, 'records', records);
 };
@@ -39,6 +43,7 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data, vbaData }) => {
   const isMuseumData = Object.prototype.hasOwnProperty.call(data, 'taxonomy');
   if (isMuseumData) {
     // reduce the data object to a subset
+    // debugger;
     const subset = [
       'hazards',
       'animalType',
@@ -87,6 +92,7 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data, vbaData }) => {
   };
 
   if (data.imageUrl) {
+    // debugger;
     specieTemplate.media = [{
       large: {
         uri: data.largeImageUrl ? data.largeImageUrl.replace(/http:\/\//, 'https://') : null,
@@ -100,11 +106,15 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data, vbaData }) => {
       thumbnail: {
         uri: data.thumbnailUrl ? data.thumbnailUrl.replace(/http:\/\//, 'https://') : null,
       },
+      author: data.author,
+      source: data.infoSourceName,
     }];
     return Vue.set(state.speciesData, taxonId, specieTemplate);
   }
   specieTemplate.media = [];
+  if (!Array.isArray(data)) return Vue.set(state.speciesData, taxonId, specieTemplate);
   data.forEach((herbariumData) => {
+    // debugger;
     specieTemplate.media.push({
       thumbnail: {
         uri: herbariumData.accessPoints.data.find(d => d.variant === 'thumbnail').accessURI,
@@ -112,6 +122,9 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data, vbaData }) => {
       medium: {
         uri: herbariumData.accessPoints.data.find(d => d.variant === 'preview').accessURI,
       },
+      licence: herbariumData.license,
+      author: herbariumData.creator,
+      rights: herbariumData.rights,
     });
   });
   return Vue.set(state.speciesData, taxonId, specieTemplate);

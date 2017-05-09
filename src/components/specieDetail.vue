@@ -62,7 +62,6 @@ export default {
   },
   computed: {
     description() {
-      console.log(this.specie.generalDescription);
       return this.specie.generalDescription;
     },
   },

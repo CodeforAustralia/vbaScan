@@ -1,6 +1,6 @@
 /* eslint-disable arrow-body-style */
 
-import { guestLogin, recordsByPosition /* , vbaSpecieSearch */} from '../api/vba';
+import { guestLogin, recordsByPosition, speciesByPosition /* , vbaSpecieSearch */} from '../api/vba';
 import { searchMuseumSpecies } from '../api/museum';
 import { searchALASpecies } from '../api/atlasLivingAus';
 import { searchHerbariumSpecies } from '../api/herbarium';
@@ -25,6 +25,71 @@ export const fetchToken = ({ commit }) => {
     .then((token) => {
       console.log('response body : ', token);
       commit('SET_TOKEN', token);
+    });
+};
+
+export const searchRecords = ({ commit, state }) => {
+  const token = state.token;
+  const position = {
+    lat: state.position.lat,
+    long: state.position.long,
+    rad: state.searchRadius,
+  };
+  // fetch species
+  speciesByPosition(position, token)
+    .then((species) => {
+      commit('SET_SPECIES', species);
+      species.forEach((specie) => {
+        const taxonomy = {
+          scientificName: specie.scientificDisplayNme,
+          commonName: specie.commonNme,
+        };
+
+        searchMuseumSpecies(taxonomy)
+          .then((museumSpecie) => {
+            if (museumSpecie) {
+              return commit('ADD_SPECIE_DATA', {
+                taxonId: specie.taxonId,
+                data: museumSpecie,
+                vbaData: specie,
+              });
+            }
+            return searchHerbariumSpecies(taxonomy)
+              .then((herbariumSpecies) => {
+                if (herbariumSpecies.length > 0) {
+                  return commit('ADD_SPECIE_DATA', {
+                    taxonId: specie.taxonId,
+                    data: herbariumSpecies,
+                    vbaData: specie,
+                  });
+                }
+                // If the Vic museum doesnt return data, lookup the ALA
+                return searchALASpecies(taxonomy)
+                  .then((alaSpecie) => {
+                    if (alaSpecie) {
+                      return commit('ADD_SPECIE_DATA', {
+                        taxonId: specie.taxonId,
+                        data: alaSpecie,
+                        vbaData: specie,
+                      });
+                    }
+                    return commit('ADD_SPECIE_DATA', {
+                      taxonId: specie.taxonId,
+                      data: {
+                        commonName: specie.commonNme,
+                        name: specie.scientificDisplayNme,
+                      },
+                      vbaData: specie,
+                    });
+                  });
+              });
+          });
+      });
+    });
+  // fetch records
+  recordsByPosition(position, token)
+    .then((records) => {
+      commit('SET_RECORDS', records);
     });
 };
 

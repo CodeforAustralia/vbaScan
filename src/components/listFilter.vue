@@ -11,6 +11,8 @@
       <div id="dropdown-options">
         <md-option value="commonName">Common name</md-option>
         <md-option value="scientificName">Scientific name</md-option>
+        <md-option value="flora">Flora</md-option>
+        <md-option value="fauna">Fauna</md-option>
         <md-option value="distance">Distance</md-option>        
       </div>
       </md-select>

@@ -54,7 +54,7 @@ export default {
   computed: {
     thumbnail() {
       const media = this.$store.getters.specieMedia(this.taxonId);
-      if (!media) return false;
+      if (!media || !media.length) return false;
       if (Object.prototype.hasOwnProperty.call(media[0], 'small')) return media[0].small.uri;
       if (Object.prototype.hasOwnProperty.call(media[0], 'thumbnail')) return media[0].thumbnail.uri;
       return false;

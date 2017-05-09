@@ -36,7 +36,6 @@ export default {
       currentPage: 1,
       itemsPerPage: 8,
       resultCount: 0,
-      rangeDisplayed: [],
     };
     return data;
   },
@@ -53,6 +52,10 @@ export default {
           return this.paginate(this.byScientificName());
         case 'distance':
           return this.paginate(this.byDistance());
+        case 'flora':
+          return this.paginate(this.byFlora());
+        case 'fauna':
+          return this.paginate(this.byFauna());
         default:
           return this.paginate(this.byScientificName());
       }
@@ -60,60 +63,63 @@ export default {
     totalPages() {
       return Math.ceil(this.resultCount / this.itemsPerPage);
     },
-    ranges() {
-      const speciesDistance = this.byDistance()
-        .reduce((accu, specie) => {
-          // convert from Km to m and round value;
-          const distance = Math.round(specie.closestRecordDistance * 1000);
-          // check if value already in array;
-          if (!accu.some(arrVal => distance === arrVal)) {
-            return [...accu, distance];
-          }
-          return accu;
-        }, []);
-      const min = speciesDistance[0];
-      const max = speciesDistance[speciesDistance.length - 1];
-      const steps = Math.round(max - min) / 5;
-      const ranges = [];
+    // ranges() {
+    //   const speciesDistance = this.byDistance()
+    //     .reduce((accu, specie) => {
+    //       // convert from Km to m and round value;
+    //       const distance = Math.round(specie.closestRecordDistance * 1000);
+    //       // check if value already in array;
+    //       if (!accu.some(arrVal => distance === arrVal)) {
+    //         return [...accu, distance];
+    //       }
+    //       return accu;
+    //     }, []);
+    //   const min = speciesDistance[0];
+    //   const max = speciesDistance[speciesDistance.length - 1];
+    //   const steps = Math.round(max - min) / 5;
+    //   const ranges = [];
 
-      // break if not enough distance value available to build range.
-      if (steps <= 0) {
-        const step = min + (0 - (min % 10));
-        return [step];
-      }
-      // build ranges value
-      for (let i = min; i <= max; i += steps) {
-        // round to lower multiple of 10. eg: 2348 -> 2340
-        const roundedDown = i + (0 - (i % 10));
-        ranges.push(roundedDown);
-      }
-      // Check if species present in ranges
-      const validRanges = ranges.filter((range, index, array) => {
-        const maxRange = array[index + 1];
-        // check if the a record is present between range and range + 1
-        const inRange = speciesDistance.some(dist => dist >= range && dist < maxRange);
-        return inRange;
-      });
-      console.log(
-        `validRanges : ${validRanges}
-        min distance : ${min}
-        max distance : ${max}
-        steps : ${steps}`);
-      return validRanges;
-    },
+    //   // break if not enough distance value available to build range.
+    //   if (steps <= 0) {
+    //     const step = min + (0 - (min % 10));
+    //     return [step];
+    //   }
+    //   // build ranges value
+    //   for (let i = min; i <= max; i += steps) {
+    //     // round to lower multiple of 10. eg: 2348 -> 2340
+    //     const roundedDown = i + (0 - (i % 10));
+    //     ranges.push(roundedDown);
+    //   }
+    //   // Check if species present in ranges
+    //   const validRanges = ranges.filter((range, index, array) => {
+    //     const maxRange = array[index + 1];
+    //     // check if the a record is present between range and range + 1
+    //     const inRange = speciesDistance.some(dist => dist >= range && dist < maxRange);
+    //     return inRange;
+    //   });
+    //   console.log(
+    //     `validRanges : ${validRanges}
+    //     min distance : ${min}
+    //     max distance : ${max}
+    //     steps : ${steps}`);
+    //   return validRanges;
+    // },
   },
   methods: {
     paginate(list) {
       this.resultCount = list.length;
-      if (this.currentPage >= this.totalPages) {
-        this.currentPage = this.totalPages - 1;
-      }
-      const index = this.currentPage * this.itemsPerPage;
+      // if (this.currentPage >= this.totalPages) {
+      //   this.currentPage = this.totalPages - 1;
+      // }
+      const index = (this.currentPage - 1) * this.itemsPerPage;
+      // debugger;
+      console.log('index: ', index);
       return list.slice(index, index + this.itemsPerPage);
     },
     setPage(pageNumber) {
-      this.rangeDisplayed = [];
+      console.log(`current page ${this.currentPage} | pageNumber ${pageNumber}`);
       this.currentPage = pageNumber;
+      console.log(this.currentPage);
     },
     byScientificName() {
       const species = this.$store.getters.species;
@@ -139,9 +145,14 @@ export default {
       });
       return filteredSpecies || [];
     },
-    selectSpecie() {
-      const taxonId = this.taxonId;
-      this.$store.dispatch('setSpecieDetail', taxonId);
+    byFlora() {
+      const species = this.$store.getters.species;
+      return species.filter(specie => specie.primaryCd === 'Flora');
+    },
+    byFauna() {
+      const species = this.$store.getters.species;
+      // everything but flora
+      return species.filter(specie => specie.primaryCd !== 'Flora');
     },
     byDistance() {
       const species = this.$store.getters.species;
@@ -154,16 +165,16 @@ export default {
       return speciesWithClosestRecord
         .sort((a, b) => a.closestRecordDistance - b.closestRecordDistance);
     },
-    speciesInRange(min, max) {
-      const inRange = this.byDistance()
-        .filter((specie) => {
-          const distance = Math.round(specie.closestRecordDistance * 1000);
-          if (max) return distance >= min && distance < max;
-          return distance >= min;
-        });
-      console.log(min, max, inRange);
-      return inRange;
-    },
+    // speciesInRange(min, max) {
+    //   const inRange = this.byDistance()
+    //     .filter((specie) => {
+    //       const distance = Math.round(specie.closestRecordDistance * 1000);
+    //       if (max) return distance >= min && distance < max;
+    //       return distance >= min;
+    //     });
+    //   console.log(min, max, inRange);
+    //   return inRange;
+    // },
   },
 };
 </script>

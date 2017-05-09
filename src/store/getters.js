@@ -34,15 +34,13 @@ function convertConservation(status) {
 
   const str = status.trim();
   if (str === '*') {
-    console.log(`status ${status} is Not native`);
+    // console.log(`status ${status} is Not native`);
     return 'Not native';
   }
   const isThreatened = threatenedRegex.some((regex) => {
     return str.search(regex) !== -1;
   });
-
-  console.log(`status ${status} is Threatened ? ${isThreatened}`);
-
+  // console.log(`status ${status} is Threatened ? ${isThreatened}`);
   if (isThreatened) {
     return 'Threatened';
   }
@@ -98,6 +96,35 @@ export const token = (state) => {
 };
 
 export const species = (state) => {
+  // countOfSightings
+  const speciesList = state.species.reduce((accu, specie) => {
+    const specieClone = Object.assign({}, {
+      commonNme: specie.commonNme,
+      // countOfSightings: specie.countOfSightings,
+      commonNmeSynonym: specie.commonNmeSynonym,
+      lastRecord: specie.lastRecord,
+      // parentTaxonId:specie.parentTaxonId,
+      primaryCd: specie.primaryCde,
+      scientificDisplayNme: specie.scientificDisplayNme,
+      scientificNme: specie.scientificNme,
+      scientificNmeSynonym: specie.scientificNmeSynonym,
+      shortName: specie.shortName,
+      taxonId: specie.taxonId,
+      // taxonLevelCde:specie.taxonLevelCde,
+      // taxonTypeCde:specie.taxonTypeCde,
+      conservationStatus: convertConservation(specie.conservationStatus),
+      countOfSightings: Object.prototype.hasOwnProperty.call(specie, 'countOfSightings')
+        ? specie.countOfSightings
+        : null,
+    });
+    // filter out records with totalCount set to 0
+    if (specieClone.countOfSightings === 0) return accu;
+    return [...accu, specieClone];
+  });
+  return speciesList;
+};
+
+export const Oldspecies = (state) => {
   const speciesList = state.records.reduce((accuSpecies, specie) => {
     const specieClone = Object.assign({}, {
       commonNme: specie.commonNme,
