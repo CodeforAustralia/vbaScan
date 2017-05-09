@@ -21,7 +21,7 @@
     </div>
     <ul class="pagination">
       <li v-for="pageNumber in totalPages" v-if="Math.abs(pageNumber - currentPage) < 2 || pageNumber == totalPages || pageNumber == 1">
-        <md-button href="#" @click.native="setPage(pageNumber)"  :class="{current: currentPage === pageNumber, last: (pageNumber == totalPages && Math.abs(pageNumber - currentPage) > 2), first:(pageNumber == 1 && Math.abs(pageNumber - currentPage) > 2)}">{{ pageNumber }}</md-button>
+        <md-button href="#" @click.native="setPage(pageNumber)"  :class="{current: currentPage === pageNumber -1, last: (pageNumber == totalPages && Math.abs(pageNumber - currentPage) > 2), first:(pageNumber == 1 && Math.abs(pageNumber - currentPage) > 2)}">{{ pageNumber }}</md-button>
       </li>
     </ul>
   </div>
@@ -33,7 +33,7 @@ import gridListItem from './gridListItem';
 export default {
   data() {
     const data = { // eslint-disable-line no-unused-vars
-      currentPage: 1,
+      currentPage: 0,
       itemsPerPage: 8,
       resultCount: 0,
     };
@@ -44,6 +44,9 @@ export default {
     gridListItem,
   },
   computed: {
+    species() {
+      return this.$store.getters.species;
+    },
     items() {
       switch (this.$store.state.filter) {
         case 'commonName':
@@ -108,6 +111,7 @@ export default {
   methods: {
     paginate(list) {
       this.resultCount = list.length;
+<<<<<<< HEAD
       // if (this.currentPage >= this.totalPages) {
       //   this.currentPage = this.totalPages - 1;
       // }
@@ -120,6 +124,20 @@ export default {
       console.log(`current page ${this.currentPage} | pageNumber ${pageNumber}`);
       this.currentPage = pageNumber;
       console.log(this.currentPage);
+=======
+      if (list.length <= this.itemsPerPage) {
+        return list;
+      }
+      if (this.currentPage >= this.totalPages) {
+        this.currentPage = this.totalPages;
+      }
+      const index = this.currentPage * this.itemsPerPage;
+      return list.slice(index, index + this.itemsPerPage);
+    },
+    setPage(pageNumber) {
+      console.log(pageNumber);
+      this.currentPage = pageNumber - 1;
+>>>>>>> f423d219280e024348c3f8b53fbf58903fbc69ef
     },
     byScientificName() {
       const species = this.$store.getters.species;
