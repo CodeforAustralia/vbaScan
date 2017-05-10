@@ -39,6 +39,8 @@ export const SWITCH_PROGRESS = (state) => {
   Vue.set(state, 'progress', !state.progress);
 };
 
+export const HYDRA_SPECIE = (state, taxonId) => Vue.set(state.speciesData, taxonId, true);
+
 export const ADD_SPECIE_DATA = (state, { taxonId, data, vbaData }) => {
   const isMuseumData = Object.prototype.hasOwnProperty.call(data, 'taxonomy');
   if (isMuseumData) {

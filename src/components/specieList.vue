@@ -110,6 +110,7 @@ export default {
   },
   methods: {
     paginate(list) {
+      console.log('paginate called');
       if (list.length < this.itemsPerPage) {
         return list;
       }
@@ -118,9 +119,10 @@ export default {
       //   this.currentPage = this.totalPages - 1;
       // }
       const index = (this.currentPage - 1) * this.itemsPerPage;
-      // debugger;
-      console.log('index: ', index);
-      return list.slice(index, index + this.itemsPerPage);
+      const paginatedList = list.slice(index, index + this.itemsPerPage);
+      // hydrate the specie data for the page;
+      paginatedList.forEach(specie => this.$store.dispatch('hydrateSpecie', specie.taxonId));
+      return paginatedList;
     },
     setPage(pageNumber) {
       console.log(`current page ${this.currentPage} | pageNumber ${pageNumber}`);

@@ -39,57 +39,93 @@ export const searchRecords = ({ commit, state }) => {
   speciesByPosition(position, token)
     .then((species) => {
       commit('SET_SPECIES', species);
-      species.forEach((specie) => {
-        const taxonomy = {
-          scientificName: specie.scientificDisplayNme,
-          commonName: specie.commonNme,
-        };
-
-        searchMuseumSpecies(taxonomy)
-          .then((museumSpecie) => {
-            if (museumSpecie) {
-              return commit('ADD_SPECIE_DATA', {
-                taxonId: specie.taxonId,
-                data: museumSpecie,
-                vbaData: specie,
-              });
-            }
-            return searchHerbariumSpecies(taxonomy)
-              .then((herbariumSpecies) => {
-                if (herbariumSpecies.length > 0) {
-                  return commit('ADD_SPECIE_DATA', {
-                    taxonId: specie.taxonId,
-                    data: herbariumSpecies,
-                    vbaData: specie,
-                  });
-                }
-                // If the Vic museum doesnt return data, lookup the ALA
-                return searchALASpecies(taxonomy)
-                  .then((alaSpecie) => {
-                    if (alaSpecie) {
-                      return commit('ADD_SPECIE_DATA', {
-                        taxonId: specie.taxonId,
-                        data: alaSpecie,
-                        vbaData: specie,
-                      });
-                    }
-                    return commit('ADD_SPECIE_DATA', {
-                      taxonId: specie.taxonId,
-                      data: {
-                        commonName: specie.commonNme,
-                        name: specie.scientificDisplayNme,
-                      },
-                      vbaData: specie,
-                    });
-                  });
-              });
-          });
-      });
     });
   // fetch records
   recordsByPosition(position, token)
     .then((records) => {
       commit('SET_RECORDS', records);
+    });
+};
+
+export const hydrateSpecie = ({ commit, state }, taxonId) => {
+  const specie = state.species.find(s => s.taxonId === taxonId);
+  if (state.speciesData[taxonId]) return Promise.resolve();
+  commit('HYDRA_SPECIE', taxonId);
+  const taxonomy = {
+    scientificName: specie.scientificDisplayNme,
+    commonName: specie.commonNme,
+  };
+  console.log('hydrating', specie.taxonId);
+  if (specie.primaryCde === 'Flora') {
+    return searchHerbariumSpecies(taxonomy)
+      .then((herbariumSpecies) => {
+        if (herbariumSpecies.length > 0) {
+          return commit('ADD_SPECIE_DATA', {
+            taxonId: specie.taxonId,
+            data: herbariumSpecies,
+            vbaData: specie,
+          });
+        }
+        // If the Vic museum doesnt return data, lookup the ALA
+        return searchALASpecies(taxonomy)
+          .then((alaSpecie) => {
+            if (alaSpecie) {
+              return commit('ADD_SPECIE_DATA', {
+                taxonId: specie.taxonId,
+                data: alaSpecie,
+                vbaData: specie,
+              });
+            }
+            return commit('ADD_SPECIE_DATA', {
+              taxonId: specie.taxonId,
+              data: {
+                commonName: specie.commonNme,
+                name: specie.scientificDisplayNme,
+              },
+              vbaData: specie,
+            });
+          });
+      });
+  }
+
+  return searchMuseumSpecies(taxonomy)
+    .then((museumSpecie) => {
+      if (museumSpecie) {
+        return commit('ADD_SPECIE_DATA', {
+          taxonId: specie.taxonId,
+          data: museumSpecie,
+          vbaData: specie,
+        });
+      }
+      return searchHerbariumSpecies(taxonomy)
+        .then((herbariumSpecies) => {
+          if (herbariumSpecies.length > 0) {
+            return commit('ADD_SPECIE_DATA', {
+              taxonId: specie.taxonId,
+              data: herbariumSpecies,
+              vbaData: specie,
+            });
+          }
+          // If the Vic museum doesnt return data, lookup the ALA
+          return searchALASpecies(taxonomy)
+            .then((alaSpecie) => {
+              if (alaSpecie) {
+                return commit('ADD_SPECIE_DATA', {
+                  taxonId: specie.taxonId,
+                  data: alaSpecie,
+                  vbaData: specie,
+                });
+              }
+              return commit('ADD_SPECIE_DATA', {
+                taxonId: specie.taxonId,
+                data: {
+                  commonName: specie.commonNme,
+                  name: specie.scientificDisplayNme,
+                },
+                vbaData: specie,
+              });
+            });
+        });
     });
 };
 
