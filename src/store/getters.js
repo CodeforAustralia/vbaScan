@@ -97,6 +97,7 @@ export const token = (state) => {
 };
 
 export const species = (state) => {
+  if (!(state.species.length > 0)) return [];
   // countOfSightings
   const speciesList = state.species.reduce((accu, specie) => {
     const specieClone = Object.assign({}, {

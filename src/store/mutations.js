@@ -26,6 +26,7 @@ export const SET_RADIUS = (state, value) => {
 };
 
 export const CLEAR_RECORDS = (state) => {
+  Vue.set(state, 'species', []);
   Vue.set(state, 'records', []);
 };
 
@@ -137,5 +138,5 @@ export const UPDATE_SPECIE_DETAIL = (state, specie) => {
 };
 
 export const ATTEMPT_MADE = (state) => {
-  Vue.set(state, 'attemptSatus', true);
+  Vue.set(state, 'attemptSatus', Date.now());
 };

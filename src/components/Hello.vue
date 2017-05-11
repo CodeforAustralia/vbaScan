@@ -1,20 +1,33 @@
 <template>
   <div class="hello">
     <div v-if="!this.$store.state.species.length" class="intro">
-    <template v-if="!this.$store.state.attemptSatus">
+    <template v-if="(!this.$store.state.species.length || !this.$store.state.records.length) && !this.$store.state.attemptSatus">
       <h1>Welcome to Bio scan</h1>
       <p>Explore nearby recording of species. </p>
       <p>Specie's records are provided by the <a href="https://vba.dse.vic.gov.au/vba/">Victorian Biodiversity Atlas</a>.
-      Biodiversity knowledge is comming from, <a href="https://museumvictoria.com.au">Museums Victoria</a>, <a href="https://www.ala.org.au/">Atlas of Living Australia</a> and the <a href="https://www.rbg.vic.gov.au/">Royal Botanic Gardens Victoria</a> for FLora.
-      This is a <a href="https://www.delwp.vic.gov.au">DELWP</a> and <a href="www.codeforaustralia.org/">Code for Australia</a> project.
+      Biodiversity knowledge is comming from : </p>
+      <ul>
+        <li><a href="https://museumvictoria.com.au">Museums Victoria</a></li>
+        <li><a href="https://www.ala.org.au/">Atlas of Living Australia</a></li>
+        <li><a href="https://www.rbg.vic.gov.au/">Royal Botanic Gardens Victoria</a></li>
+      </ul>
+      <p>
+        This is a <a href="https://www.delwp.vic.gov.au">DELWP</a> and <a href="www.codeforaustralia.org/">Code for Australia</a> project.
       </p>
     </template>
-    <template v-else>
+    <template v-else-if ="isLoading">
+      <p>Loading...</p>
+    </template>
+    <template v-else-if="this.$store.state.attemptSatus && (!this.$store.state.species.length || !this.$store.state.records.length)">
       <p>We couldn't find any records around you.
       Try with a broader search radius or move further away and search again.</p>
     </template>
       <md-layout md-align="center">
-        <md-button :disabled="!this.$store.state.token" @click.native="browse" id="browse-button" class="md-raised">
+<!--         <md-button v-if="this.$store.state.attemptSatus < (Date.now() + 5000)" :disabled="true" id="browse-button" class="md-raised">
+          <md-icon>place</md-icon>  
+          Searching...
+        </md-button> -->
+        <md-button v-if="(!this.$store.state.species.length || !this.$store.state.records.length)" :disabled="!this.$store.state.token" @click.native="browse" id="browse-button" class="md-raised">
           <md-icon>place</md-icon>  
           Browse
         </md-button>
@@ -37,8 +50,19 @@ export default {
     recordTable,
     specieDetail,
   },
+  data() {
+    return { // eslint-disable-line no-unused-vars
+      now: Date.now(),
+    };
+  },
 
   computed: {
+    isLoading() {
+      const attempt = this.$store.state.attemptSatus;
+      console.log(!((attempt + 5000) < this.now));
+      return !((attempt + 5000) < this.now);
+    },
+
     currentComponent() {
       if (this.$store.getters.selectedSpecieData) return 'specieDetail';
       else if (this.$store.state.species.length) return 'recordTable';
@@ -93,6 +117,12 @@ export default {
   beforeMount() {
     this.fetchToken();
   },
+  mounted() {
+    const self = this;
+    setInterval(() => {
+      self.$data.now = Date.now();
+    }, 1000);
+  },
 };
 </script>
 
@@ -108,8 +138,8 @@ ul {
 }
 
 li {
-  display: inline-block;
-  margin: 0 10px;
+/*  display: inline-block;
+*/  margin: 0 10px;
 }
 
 :root .hello a {

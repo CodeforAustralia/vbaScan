@@ -50,7 +50,8 @@ export default {
       this.$store.dispatch('clearRecords');
       this.$store.dispatch('switchProgress');
       this.$store.dispatch('searchRecords')
-        .then(() => this.$store.dispatch('switchProgress'));
+        .then(() => this.$store.dispatch('switchProgress'))
+        .then(() => this.$store.dispatch('attemptMade'));
     },
     toggleRightSidenav() {
       this.$refs.rightSidenav.toggleRightSidenav();
