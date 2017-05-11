@@ -13,6 +13,7 @@
         <md-option value="scientificName">Scientific name</md-option>
         <md-option value="flora">Flora</md-option>
         <md-option value="fauna">Fauna</md-option>
+        <md-option value="date">Date</md-option> 
         <md-option value="distance">Distance</md-option>        
       </div>
       </md-select>

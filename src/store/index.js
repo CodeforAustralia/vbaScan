@@ -20,6 +20,7 @@ const state = {
   listView: true,
   filter: 'scientificName',
   progress: false,
+  attemptSatus: false,
   searchRadius: 250,
 };
 

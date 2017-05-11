@@ -1,11 +1,18 @@
 <template>
   <div class="hello">
-    <div v-if="!this.$store.state.records.length" class="intro">
+    <div v-if="!this.$store.state.species.length" class="intro">
+    <template v-if="!this.$store.state.attemptSatus">
       <h1>Welcome to Bio scan</h1>
-      <p>Explore the recorded species nearby.
-      You can set the size of the search area and download the results.
-      Records are provided by the <a href="https://vba.dse.vic.gov.au/vba/">Victorian Biodiversity Atlas</a>
+      <p>Explore nearby recording of species. </p>
+      <p>Specie's records are provided by the <a href="https://vba.dse.vic.gov.au/vba/">Victorian Biodiversity Atlas</a>.
+      Biodiversity knowledge is comming from, <a href="https://museumvictoria.com.au">Museums Victoria</a>, <a href="https://www.ala.org.au/">Atlas of Living Australia</a> and the <a href="https://www.rbg.vic.gov.au/">Royal Botanic Gardens Victoria</a> for FLora.
+      This is a <a href="https://www.delwp.vic.gov.au">DELWP</a> and <a href="www.codeforaustralia.org/">Code for Australia</a> project.
       </p>
+    </template>
+    <template v-else>
+      <p>We couldn't find any records around you.
+      Try with a broader search radius or move further away and search again.</p>
+    </template>
       <md-layout md-align="center">
         <md-button :disabled="!this.$store.state.token" @click.native="browse" id="browse-button" class="md-raised">
           <md-icon>place</md-icon>  
@@ -34,7 +41,7 @@ export default {
   computed: {
     currentComponent() {
       if (this.$store.getters.selectedSpecieData) return 'specieDetail';
-      else if (this.$store.state.records.length) return 'recordTable';
+      else if (this.$store.state.species.length) return 'recordTable';
       return null;
     },
 
@@ -79,7 +86,8 @@ export default {
       this.$store.dispatch('getPosition')
         .then(() => this.$store.dispatch('searchRecords'))
         // .then(() => this.$store.dispatch('fetchRecordsByLocation'))
-        .then(() => this.$store.dispatch('switchProgress'));
+        .then(() => this.$store.dispatch('switchProgress'))
+        .then(() => this.$store.dispatch('attemptMade'));
     },
   },
   beforeMount() {

@@ -59,6 +59,8 @@ export default {
           return this.paginate(this.byFlora());
         case 'fauna':
           return this.paginate(this.byFauna());
+        case 'date':
+          return this.paginate(this.byDate());
         default:
           return this.paginate(this.byScientificName());
       }
@@ -112,6 +114,7 @@ export default {
     paginate(list) {
       console.log('paginate called');
       if (list.length < this.itemsPerPage) {
+        list.forEach(specie => this.$store.dispatch('hydrateSpecie', specie.taxonId));
         return list;
       }
       this.resultCount = list.length;
@@ -129,6 +132,13 @@ export default {
       this.currentPage = pageNumber;
       console.log(this.currentPage);
     },
+
+    byDate() {
+      const species = this.$store.getters.species;
+      const filteredSpecies = species.sort((a, b) => a.lastRecord - b.lastRecord);
+      return filteredSpecies || [];
+    },
+
     byScientificName() {
       const species = this.$store.getters.species;
       const filteredSpecies = species.sort((a, b) => {

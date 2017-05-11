@@ -135,3 +135,7 @@ export const ADD_SPECIE_DATA = (state, { taxonId, data, vbaData }) => {
 export const UPDATE_SPECIE_DETAIL = (state, specie) => {
   Vue.set(state, 'selectedSpecie', specie);
 };
+
+export const ATTEMPT_MADE = (state) => {
+  Vue.set(state, 'attemptSatus', true);
+};
