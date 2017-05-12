@@ -65,12 +65,11 @@ export default {
 
     currentComponent() {
       if (this.$store.getters.selectedSpecieData) return 'specieDetail';
-      else if (this.$store.state.species.length) return 'recordTable';
+      else if (this.$store.getters.species.length) return 'recordTable';
       return null;
     },
 
     selectedSpecie() {
-      console.log('___', this.$store.getters.selectedSpecieData);
       return this.$store.getters.selectedSpecieData;
     },
 

@@ -20,14 +20,8 @@ export default {
   computed: {
     currentComponent() {
       // Render component when records are available
-      if (!this.$store.getters.records.length) return null;
-      // Render component based on filter selection
-      switch (this.$store.state.filter) {
-        // case 'distance':
-          // return 'byDistanceList';
-        default:
-          return 'specieList';
-      }
+      if (!this.$store.getters.species.length) return null;
+      return 'specieList';
     },
   },
   methods: {
