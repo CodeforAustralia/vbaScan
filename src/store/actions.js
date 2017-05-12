@@ -202,32 +202,32 @@ export const hydrateSpecies = ({ commit }, specieName) => {
 };
 
 export const getPosition = ({ commit }) => {
-  // const options = {
-  //   enableHighAccuracy: true,
-  //   timeout: 10000,
-  //   maximumAge: 0,
-  // };
-  // return new Promise((resolve, reject) => {
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 10000,
+    maximumAge: 0,
+  };
+  return new Promise((resolve, reject) => {
   // eslint-disable-next-line
-  //   if (!('geolocation' in navigator)) reject(new Error('no geolocation feature present on device'));
+    if (!('geolocation' in navigator)) reject(new Error('no geolocation feature present on device'));
 
-  //   navigator.geolocation.getCurrentPosition(
-  //     (pos) => {
-  //       const accu = pos.coords.accuracy;
-  //       const lat = pos.coords.latitude;
-  //       const long = pos.coords.longitude;
-  //       console.log(`Position aquired, accuracy : ${pos.coords.accuracy}`);
-  //       resolve({ accu, lat, long });
-  //     },
-  //     (err) => {
-  //       reject(new Error(err.message));
-  //     }, options);
-  // })
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const accu = pos.coords.accuracy;
+        const lat = pos.coords.latitude;
+        const long = pos.coords.longitude;
+        console.log(`Position aquired, accuracy : ${pos.coords.accuracy}`);
+        resolve({ accu, lat, long });
+      },
+      (err) => {
+        reject(new Error(err.message));
+      }, options);
+  })
   // -36.731842, 147.812758
   // eslint-disable-next-line
-  return new Promise((resolve, reject) => {
-    resolve({ accu: '12', lat: '-36.731842', long: '147.812758' });
-  })
+  // return new Promise((resolve, reject) => {
+  //   resolve({ accu: '12', lat: '-36.731842', long: '147.812758' });
+  // })
   // eslint-disable-next-line
   // return new Promise((resolve, reject) => {
   //   const minLat = 36.283390;
