@@ -14,7 +14,7 @@ export const SET_SPECIES = (state, species) => {
 };
 
 export const SET_RECORDS = (state, records) => {
-  Vue.set(state, 'records', records);
+  state.records.push(...records);
 };
 
 export const SET_POSITION = (state, position) => {

@@ -17,7 +17,7 @@
       </div>
     </div>
       <div class="observation">
-        <p>{{ obs }} Observation{{obs > 1 ? 's':''}}<p>
+        <p v-show="obs">{{ obs }} Observation{{obs > 1 ? 's':''}}<p>
         <p>Last from {{lastObs}}</p>
       </div>
     </div>
@@ -44,6 +44,10 @@ export default {
       type: Number,
       default() { return undefined; },
     },
+    lastRecord: {
+      type: Number,
+      default() { return undefined; },
+    },
   },
   methods: {
     selectSpecie() {
@@ -61,20 +65,12 @@ export default {
     },
     obs() {
       const id = this.taxonId;
-      const obs = this.$store.getters.records.reduce((acc, record) => {
-        if (record.taxonId === id) return acc + 1;
-        return acc;
-      }, 0);
-      return obs;
+      const obs = this.$store.getters.records.filter(record => record.taxonId === id);
+      return obs.length;
     },
     lastObs() {
-      const id = this.taxonId;
-      const obs = this.$store.getters.records.reduce((acc, record) => {
-        if (record.taxonId === id) acc.push(record);
-        return acc;
-      }, []);
-      const sorted = obs.sort((a, b) => b.surveyStartSdt - a.surveyStartSdt);
-      return new Date(sorted[0].surveyStartSdt).getFullYear();
+      const lastRecord = this.lastRecord;
+      return new Date(lastRecord).getFullYear();
     },
   },
 };

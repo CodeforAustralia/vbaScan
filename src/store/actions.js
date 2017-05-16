@@ -41,14 +41,21 @@ export const searchRecords = ({ commit, state }) => {
       commit('SET_SPECIES', species);
     });
   // fetch records
-  recordsByPosition(position, token)
-    .then((records) => {
-      commit('SET_RECORDS', records);
-    });
+  // recordsByPosition(position, token)
+  //   .then((records) => {
+  //     commit('SET_RECORDS', records);
+  //   });
 };
 
 export const hydrateSpecie = ({ commit, state }, taxonId) => {
   const specie = state.species.find(s => s.taxonId === taxonId);
+  const token = state.token;
+  const position = {
+    lat: state.position.lat,
+    long: state.position.long,
+    rad: state.searchRadius,
+  };
+  // check if the request was already performed.
   if (state.speciesData[taxonId]) return Promise.resolve();
   commit('HYDRA_SPECIE', taxonId);
   const taxonomy = {
@@ -56,6 +63,13 @@ export const hydrateSpecie = ({ commit, state }, taxonId) => {
     commonName: specie.commonNme,
   };
   console.log('hydrating', specie.taxonId);
+
+  recordsByPosition(position, taxonId, token)
+    .then((records) => {
+      console.log(`found ${records.length} obs for ${taxonId} : ${taxonomy.commonName}`);
+      commit('SET_RECORDS', records);
+    });
+
   if (specie.primaryCde === 'Flora') {
     return searchHerbariumSpecies(taxonomy)
       .then((herbariumSpecies) => {
@@ -220,7 +234,9 @@ export const getPosition = ({ commit }) => {
         resolve({ accu, lat, long });
       },
       (err) => {
-        reject(new Error(err.message));
+        // reject(new Error(err.message));
+        console.log(new Error(err.message));
+        resolve({ accu: '12', lat: '-36.731842', long: '147.812758' });
       }, options);
   })
   // -36.731842, 147.812758

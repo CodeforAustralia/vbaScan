@@ -6,7 +6,8 @@
         :commonName="specie.commonNme"
         :conservationStatus="specie.conservationStatus"
         :scientificName="specie.scientificDisplayNme"
-        :taxonId="specie.taxonId" 
+        :taxonId="specie.taxonId"
+        :lastRecord="specie.lastRecord"
         :key="specie.scientificDisplayNme">
       </specieListItem>
     </template>
