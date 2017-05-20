@@ -10,7 +10,7 @@
     </br>
     <form action="">
       <label for="weight">Search radius : {{searchRadius}} m</label>
-      <input type="range" id="weight" min="50" v-model="searchRadius" max="1500" step="50">  
+      <input type="range" id="weight" min="25" v-model="searchRadius" max="500" step="25">  
     </form>
     <p>Location : </p>
     <p>Latitude : {{position.lat}}</p>
@@ -24,12 +24,12 @@
 <script>
 export default {
   name: 'sidePanel',
-  data() {
-    const data = { // eslint-disable-line no-unused-vars
-      radius: 251,
-    };
-    return data;
-  },
+  // data() {
+  //   const data = { // eslint-disable-line no-unused-vars
+  //     radius: 251,
+  //   };
+  //   return data;
+  // },
   computed: {
     searchRadius: {
       get() { return this.$store.state.searchRadius; },
